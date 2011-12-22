@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class Game {
 	private final List<Player> players;
-	private Map<Player, Integer> scoreboard;
+	private ScoreBoard scoreboard;
 	private final Deck deck;
 	private final Iterator<Player> pilotIterator;
 	
@@ -25,7 +25,6 @@ public class Game {
 		deck = new Deck();
 		for (final Player player : players) {
 			player.addCards(deck.draw(6));
-			scoreboard.put(player, 0);
 		}
 		pilotIterator = new InfiniteIterator(players);
 	}
@@ -48,8 +47,9 @@ public class Game {
 				
 				for (final Player player : remainingPlayers) { //TODO: order important
 					if (player != pilot) {
-						if (!player.stay()) {
-							scoreboard.addPoints(player, level.getScore());
+						Move move = player.play(getState());
+						if (move == Move.LEAVE) {
+							player.score(level.getScore());
 							remainingPlayers.remove(player);
 						}
 					}
@@ -57,8 +57,7 @@ public class Game {
 				
 				if (pilot.hasCards(diceRoll)) {
 					pilot.pay(diceRoll, deck);
-				}
-				else {
+				} else {
 					//We crash and move to next round
 					for (final Player player : players) {
 						player.addCards(deck.draw(1));
@@ -66,5 +65,11 @@ public class Game {
 				}
 			}
 		}
+	}
+
+
+	private GameState getState() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
