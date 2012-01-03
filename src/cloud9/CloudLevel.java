@@ -29,7 +29,11 @@ public class CloudLevel {
 	}
 
 	public int getDiceNumber() {
-		// TODO Auto-generated method stub
-		return 0;
+		return diceNumber;
+	}
+    
+	@Override
+	public String toString() {
+        return "Level " + this.getScore();
 	}
 }

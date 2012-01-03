@@ -21,7 +21,10 @@ public class Dice {
 	public static Collection<Symbol> roll(final int numOfDice) {
 		final List<Symbol> rollResults = new LinkedList<Symbol>();
 		for (final int i : new Range(numOfDice)) {
-			rollResults.add(roll());
+            final Symbol symbol = roll();
+            if (symbol != Symbol.NONE) {
+    			rollResults.add(symbol);
+            }
 		}
 		return rollResults;
 	}
