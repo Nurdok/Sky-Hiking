@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cloud9;
+package com.rachum.amir.cloud9;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import com.rachum.amir.util.range.Range;
 
@@ -19,18 +20,19 @@ import com.rachum.amir.util.range.Range;
 public class Deck {
     private final List<Card> cards;
     private final List<Card> discard;
+    private final Logger logger = Logger.getLogger(this.getClass().getName());
     
 	public Deck() {
 		cards = new LinkedList<Card>();
 		discard = new LinkedList<Card>();
 		for (final int i : new Range(4)) {
-			cards.add(new Card(Symbol.WILD));
+			cards.add(Card.WILD);
 		}
 		for (final int i : new Range(18)) {
-			cards.add(new Card(Symbol.RED));
-			cards.add(new Card(Symbol.GREEN));
-			cards.add(new Card(Symbol.PURPLE));
-			cards.add(new Card(Symbol.YELLOW));
+			cards.add(Card.RED);
+			cards.add(Card.GREEN);
+			cards.add(Card.PURPLE);
+			cards.add(Card.YELLOW);
 		}
 		Collections.shuffle(cards);
 	}
@@ -50,15 +52,14 @@ public class Deck {
             }
         	cardsDrawn.add(cards.remove(0));
 		}
-        System.out.println("Current deck: " + this);
+        logger.info("Current deck: " + this);
         return cardsDrawn;
 	}
     
 	@Override
 	public String toString() {
         final Map<Card, Integer> display = new HashMap<Card, Integer>();
-		for (final Symbol symbol : Symbol.values()) {
-			final Card card = new Card(symbol);
+		for (final Card card : Card.values()) {
 			final int count = Collections.frequency(cards, card);
 			display.put(card, count);
 		}

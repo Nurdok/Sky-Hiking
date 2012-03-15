@@ -1,15 +1,16 @@
 /**
  * 
  */
-package cloud9;
+package com.rachum.amir.cloud9;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Rachum
@@ -19,6 +20,7 @@ public class Game {
 	private final List<Player> players;
 	private final Deck deck;
 	private final Iterator<Player> pilotIterator;
+	private final Logger logger = Logger.getLogger(this.getClass().getName());
     
 	private enum LevelOutcome {SUCCESS, CRASH;}
 	
@@ -27,54 +29,54 @@ public class Game {
 		this.players = players;
 		deck = new Deck();
 		for (final Player player : players) {
-			player.addCards(deck.draw(6));
+            player.gameStart(deck);
 		}
 		pilotIterator = new InfiniteIterator(players);
 	}
 
 
-	public void play() {
+	public Player play() {
 		while (true) { //TODO: until the game ends
 			final List<Player> remainingPlayers = new LinkedList<Player>(players);
 			for (final CloudLevel level : CloudLevel.gameLevels()) {
-				try {
-					System.in.read();
-				} catch (final IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-                System.out.println("Playing level" + level);
-                System.out.println("Current players are: " + remainingPlayers);
-                System.out.println("Current scores: " + scoreboard());
+                logger.log(Level.INFO, "Playing level " + level, true);
+                logger.info("Current players are: " + remainingPlayers);
+                logger.info("Current scores: " + scoreboard());
 				if (remainingPlayers.isEmpty()) {
+                    for (final Player player : players) {
+                    	player.roundEnd();
+                    }
 					break; //Move to next level
 				}
                 
 				if (level.getDiceNumber() == 0) {
 					for (final Player player : remainingPlayers) {
 						player.score(level.getScore());
-						player.addCards(deck.draw(1));
+						player.roundEnd();
 					}
                     break;
 				}
+                
 				Player pilot = pilotIterator.next();
 				while (!remainingPlayers.contains(pilot)) {
 					pilot = pilotIterator.next();
 				}
-                System.out.println("Current Pilot: " + pilot);
+                logger.info("Current Pilot: " + pilot);
                 
                 final LevelOutcome outcome = playLevel(level, remainingPlayers, pilot);
                 if (outcome == LevelOutcome.CRASH) {
+                    for (final Player player : players) {
+                    	player.roundEnd();
+                    }
                 	break;
                 }
-                
 				
 			}
             for (final Player player : players) {
             	if (player.getScore() > 49) {
-            		System.out.println("Game Over! " + player + "has a score of "
+            		logger.info("Game Over! " + player + "has a score of "
             				+ player.getScore());
-                    return;
+                    return player;
             	}
             }
 		}
@@ -82,18 +84,20 @@ public class Game {
 
 	public LevelOutcome playLevel(final CloudLevel level,
 			final Collection<Player> remainingPlayers, final Player pilot) {
-		final Collection<Symbol> diceRoll = Dice.roll(level.getDiceNumber());
+		final Collection<Card> diceRoll = Dice.roll(level.getDiceNumber());
 		//TODO: allow each player to decide...
 		
 		final List<Player> newRemainingPlayers = new LinkedList<Player>();
 		newRemainingPlayers.addAll(remainingPlayers);
 		for (final Player player : remainingPlayers) { //TODO: order important
 			if (player != pilot) {
-				final Move move = player.play(getState());
+                final GameState state = new GameState(pilot, diceRoll,
+                		remainingPlayers);
+				final Move move = player.play(state);
 				if (move == Move.LEAVE) {
 					player.score(level.getScore());
 					newRemainingPlayers.remove(player);
-					System.out.println("Player " + player.getName() +
+					logger.info("Player " + player.getName() +
 							" leaves and scores " + level.getScore() +
 							" points to a total of " + player.getScore());
 				}
@@ -101,17 +105,16 @@ public class Game {
 		}
 		remainingPlayers.retainAll(newRemainingPlayers);
 		
-		if (pilot.hasCards(diceRoll)) {
-			pilot.pay(diceRoll, deck);
-			System.out.println("The pilot has payed " + diceRoll +
+        final GameState state = new GameState(pilot, diceRoll,
+        		remainingPlayers);
+        
+		if (pilot.pay(state)) {
+			logger.info("The pilot has payed " +
 			" and we are moving on the the next level.");
             return LevelOutcome.SUCCESS;
 		} else {
 			//We crash and move to next round
-			System.out.println("Awwww... we crashed...");
-			for (final Player player : players) {
-				player.addCards(deck.draw(1));
-			}
+			logger.info("Awwww... we crashed...");
             return LevelOutcome.CRASH;
 		}
 		
@@ -123,11 +126,5 @@ public class Game {
 			scoreboard.put(player, player.getScore());
         }
         return scoreboard;
-	}
-
-
-	private GameState getState() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
