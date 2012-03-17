@@ -3,7 +3,7 @@ package com.rachum.amir.cloud9;
 import java.util.logging.Logger;
 
 
-public abstract class Player {
+public abstract class Player implements GameEventListener {
     protected String name;
     private int score;
 	protected Hand hand;
@@ -19,6 +19,7 @@ public abstract class Player {
         logger.info("Player " + this + "drew " + this.hand.getCards());
 	}
     
+	@Override
 	public void roundEnd() {
 		hand.draw(1);
 	}

@@ -23,7 +23,7 @@ public class Cloud9 {
         	players.add(new RiskyPlayer("Risky" + i));
         }
         final Game game = new Game(players);
-        game.play();
+        //game.play();
 	}
 
 }

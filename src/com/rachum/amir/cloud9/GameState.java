@@ -1,18 +1,20 @@
 package com.rachum.amir.cloud9;
 
 import java.util.Collection;
+import java.util.List;
 
 public class GameState {
     
-    public GameState(final Player pilot, final Collection<Card> diceRoll,
-			final Collection<Player> remainingPlayers) {
-		super();
-		this.pilot = pilot;
-		this.diceRoll = diceRoll;
-		this.remainingPlayers = remainingPlayers;
+	public enum State {
+		GAME_BEGIN, GAME_END, ROUND_BEGIN, ROUND_END, LEVEL_BEGIN,
+		LEVEL_END, MOVE, PAY, DICE_ROLLED;
 	}
     
-	public Player pilot;
-	public Collection<Card> diceRoll;
-	public Collection<Player> remainingPlayers;
+	public Player pilot = null;
+	public Collection<Card> diceRoll = null;
+	public List<Player> remainingPlayers = null;
+    public State state = null;
+    public CloudLevel level = null;
+    public Boolean didPay = null;
+	public Player currentPlayer;
 }
