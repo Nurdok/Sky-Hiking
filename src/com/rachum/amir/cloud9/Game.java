@@ -12,17 +12,16 @@ import java.util.logging.Logger;
 import com.rachum.amir.cloud9.GameState.State;
 
 /**
- * @author Rachum
+ * @author Amir Rachum
  *
  */
 public class Game {
 	private final List<Player> players;
 	private final Deck deck;
-	private final Iterator<Player> pilotIterator;
-	private final Logger logger = Logger.getLogger(this.getClass().getName());
+	//private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private final Collection<GameEventListener> listeners = new LinkedList<GameEventListener>();
     
-	private enum LevelOutcome {SUCCESS, CRASH;}
+	//private enum LevelOutcome {SUCCESS, CRASH;}
 	
 	public Game(final List<Player> players) {
 		super();
@@ -31,7 +30,7 @@ public class Game {
 		for (final Player player : players) {
             player.gameStart(deck);
 		}
-		pilotIterator = new InfiniteIterator(players);
+		//pilotIterator = new InfiniteIterator(players);
 	}
 
     public void registerListener(final GameEventListener listener) {
@@ -39,17 +38,13 @@ public class Game {
     }
     
 
-    public GameState start() {
+    public void start() {
     	//TODO: implement
-        for (final GameEventListener listener : listeners) {
-        	listener.gameBegin(players);
-        }
-        final GameState state = new GameState();
-        state.state = GameState.State.GAME_BEGIN;
-        return state;
+        final GameEvent event = new GameEvent(GameEvent.Type.GAME_BEGIN);
+        announce(event);
     }
     
-    public GameState resume(final GameState state) {
+    public void resume(final GameEvent event) {
         switch (state.state) {
         
         case DICE_ROLLED:
@@ -64,8 +59,7 @@ public class Game {
         	break;
             
         case GAME_BEGIN:
-            state.level = CloudLevel.gameLevels().get(0);
-            state.state = GameState.State.LEVEL_BEGIN;
+            state.state = GameState.State.ROUND_BEGIN;
         	break;
             
         case GAME_END:
@@ -106,9 +100,10 @@ public class Game {
         return state;
     }
     
-	private void announce(final State levelBegin) {
-		// TODO Auto-generated method stub
-		
+	private void announce(final GameEvent event) {
+		for (GameEventListener listener : listeners) {
+			listener.handleEvent(event);
+		}
 	}
 
 	/*public void run() {
