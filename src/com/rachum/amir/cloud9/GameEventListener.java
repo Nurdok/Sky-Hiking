@@ -1,8 +1,5 @@
 package com.rachum.amir.cloud9;
 
-import java.util.Collection;
-import java.util.List;
-
 public interface GameEventListener {
 	public void handleEvent(GameEvent event);
     /*public void roundBegin();

@@ -4,24 +4,30 @@
 package com.rachum.amir.cloud9;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
+import java.util.Map;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-import com.rachum.amir.cloud9.GameState.State;
+import com.rachum.amir.cloud9.GameEvent.Type;
 
 /**
  * @author Amir Rachum
  *
  */
-public class Game {
-	private final List<Player> players;
+public class Game extends Thread {
+	public final List<Player> players;
+	public final List<Player> remainingPlayers;
 	private final Deck deck;
-	//private final Logger logger = Logger.getLogger(this.getClass().getName());
 	private final Collection<GameEventListener> listeners = new LinkedList<GameEventListener>();
+	public Collection<Card> diceRoll;
+	final Iterator<Player> pilotIterator;
     
-	//private enum LevelOutcome {SUCCESS, CRASH;}
+	private enum LevelOutcome {SUCCESS, CRASH;}
 	
 	public Game(final List<Player> players) {
 		super();
@@ -30,188 +36,126 @@ public class Game {
 		for (final Player player : players) {
             player.gameStart(deck);
 		}
-		//pilotIterator = new InfiniteIterator(players);
+    	pilotIterator = new InfiniteIterator(players);
+        remainingPlayers = new LinkedList<Player>(players);
 	}
 
     public void registerListener(final GameEventListener listener) {
     	listeners.add(listener);
     }
     
-
-    public void start() {
-    	//TODO: implement
-        final GameEvent event = new GameEvent(GameEvent.Type.GAME_BEGIN);
-        announce(event);
-    }
-    
-    public void resume(final GameEvent event) {
-        switch (state.state) {
-        
-        case DICE_ROLLED:
-            final Player player = state.remainingPlayers.get(0);
-            final Move move = player.play(state);
-            state.currentPlayer = player;
-            if (move == Move.LEAVE) {
-            	//TODO: score
-            	state.remainingPlayers.remove(player);
-            }
-            state.state = GameState.State.MOVE;
-        	break;
-            
-        case GAME_BEGIN:
-            state.state = GameState.State.ROUND_BEGIN;
-        	break;
-            
-        case GAME_END:
-        	break;
-            
-        case LEVEL_BEGIN:
-        	break;
-            
-        case LEVEL_END:
-        	break;
-            
-        case MOVE:
-        	break;
-            
-        case PAY:
-            if (state.didPay) {
-            	//TODO: move to next level (if possible)
-                announce(GameState.State.ROUND_BEGIN);
-                state.state = GameState.State.ROUND_BEGIN;
-            } else { //crash
-            	
-            }
-        	break;
-            
-        case ROUND_BEGIN:
-            state.level = CloudLevel.gameLevels().get(0);
-            state.state = GameState.State.LEVEL_BEGIN;
-        	break;
-            
-        case ROUND_END:
-        	break;
-            
-        }
-        //TODO: throw
-        for (final GameEventListener listener : listeners) {
-        	//TODO: announce state.state
-        }
-        return state;
-    }
-    
 	private void announce(final GameEvent event) {
-		for (GameEventListener listener : listeners) {
+		for (final GameEventListener listener : listeners) {
 			listener.handleEvent(event);
 		}
 	}
 
-	/*public void run() {
-        for (final GameEventListener listener : listeners) {
-        	listener.gameBegin(players);
-        }
-		while (true) { //TODO: until the game ends
+	@Override
+	public void run() {
+        announce(new GameEvent(Type.GAME_BEGIN, this));
+		while (true) {
 			final List<Player> remainingPlayers = new LinkedList<Player>(players);
-			for (final GameEventListener listener : listeners) {
-				listener.roundBegin();
-			}
+            announce(new GameEvent(Type.ROUND_BEGIN, this));
 			for (final CloudLevel level : CloudLevel.gameLevels()) {
-				for (final GameEventListener listener : listeners) {
-					listener.levelBegin(remainingPlayers);
-				}
-                logger.log(Level.INFO, "Playing level " + level, true);
-                logger.info("Current players are: " + remainingPlayers);
-                logger.info("Current scores: " + scoreboard());
-				if (remainingPlayers.isEmpty()) {
-					for (final GameEventListener listener : listeners) {
-						listener.roundEnd();
-					}
-					break; //Move to next level
-				}
+                announce(new GameEvent(Type.LEVEL_BEGIN, this));
                 
 				if (level.getDiceNumber() == 0) {
 					for (final Player player : remainingPlayers) {
 						player.score(level.getScore()); //TODO: move to listener
 					}
-					for (final GameEventListener listener : listeners) {
-						listener.roundEnd();
-					}
+                    announce(new GameEvent(Type.LEVEL_BEGIN, this));
+                    announce(new GameEvent(Type.ROUND_END, this));
                     break;
 				}
                 
-				Player pilot = pilotIterator.next();
-				while (!remainingPlayers.contains(pilot)) {
-					pilot = pilotIterator.next();
-				}
-                logger.info("Current Pilot: " + pilot);
+				final Player pilot = getNextPilot();
                 
                 final LevelOutcome outcome = playLevel(level, remainingPlayers, pilot);
                 if (outcome == LevelOutcome.CRASH) {
-					for (final GameEventListener listener : listeners) {
-						listener.roundEnd();
-					}
+                    announce(new GameEvent(Type.LEVEL_END, this));
+                    announce(new GameEvent(Type.ROUND_END, this));
                 	break;
                 }
-                for (final GameEventListener listener : listeners) {
-                	listener.levelEnd();
-                }
+                announce(new GameEvent(Type.LEVEL_END, this));
+				if (remainingPlayers.isEmpty()) {
+                    announce(new GameEvent(Type.ROUND_END, this));
+					break; //Move to next level
+				}
 				
 			}
             for (final Player player : players) {
-            	if (player.getScore() > 49) {
-            		logger.info("Game Over! " + player + "has a score of "
-            				+ player.getScore());
-                    for (final GameEventListener listener : listeners) {
-                    	listener.gameEnd(player);
-                    }
+            	if (player.getScore() >= 50) {
+                    announce(new GameEvent(Type.GAME_END, this));
+                    return;
             	}
             }
 		}
 	}
 
+	private Player getNextPilot() {
+        Player player = pilotIterator.next();
+        while (!remainingPlayers.contains(player)) {
+        	player = pilotIterator.next();
+        }
+		return player;
+	}
+
 	public LevelOutcome playLevel(final CloudLevel level,
 			final Collection<Player> remainingPlayers, final Player pilot) {
-		final Collection<Card> diceRoll = Dice.roll(level.getDiceNumber());
-		//TODO: allow each player to decide...
-		
+		diceRoll = Dice.roll(level.getDiceNumber());
+        announce(new GameEvent(Type.DICE_ROLLED, this));
+        
 		final List<Player> newRemainingPlayers = new LinkedList<Player>();
 		newRemainingPlayers.addAll(remainingPlayers);
-		for (final Player player : remainingPlayers) { //TODO: order important
+		for (final Player player : getRemainingPlayersInOrder()) {
 			if (player != pilot) {
-                final GameState state = new GameState(pilot, diceRoll,
-                		remainingPlayers);
-				final Move move = player.play(state);
+				final Lock lock = new ReentrantLock();
+                final Condition cond = lock.newCondition();
+                final MoveHandler handler = new MoveHandler(cond);
+                player.play(handler, this);
+                try {
+					cond.wait();
+				} catch (final InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				final Move move = handler.getMove();
 				if (move == Move.LEAVE) {
 					player.score(level.getScore());
 					newRemainingPlayers.remove(player);
-					logger.info("Player " + player.getName() +
-							" leaves and scores " + level.getScore() +
-							" points to a total of " + player.getScore());
+                    announce(new GameEvent(Type.MOVE, this));
 				}
 			}
 		}
 		remainingPlayers.retainAll(newRemainingPlayers);
 		
-        final GameState state = new GameState(pilot, diceRoll,
-        		remainingPlayers);
-        
-		if (pilot.pay(state)) {
-			logger.info("The pilot has payed " +
-			" and we are moving on the the next level.");
-            return LevelOutcome.SUCCESS;
-		} else {
-			//We crash and move to next round
-			logger.info("Awwww... we crashed...");
-            return LevelOutcome.CRASH;
+		final Lock lock = new ReentrantLock();
+		final Condition cond = lock.newCondition();
+		final PayHandler handler = new PayHandler(cond);
+		pilot.pay(handler, this);
+		try {
+			cond.wait();
+		} catch (final InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		if (handler.didPay()) {
+            return LevelOutcome.SUCCESS;
+		}
+        return LevelOutcome.CRASH;
 		
 	}
 	
+	private Collection<? extends Player> getRemainingPlayersInOrder() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private Map<Player, Integer> scoreboard() {
 		final Map<Player, Integer> scoreboard = new HashMap<Player, Integer>();
 		for (final Player player : players) {
 			scoreboard.put(player, player.getScore());
         }
         return scoreboard;
-	}*/
+	}
 }

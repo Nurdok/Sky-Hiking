@@ -10,15 +10,20 @@ public class GameEvent {
 		LEVEL_END, MOVE, PAY, DICE_ROLLED;
 	}
 	
-	public GameEvent(Type type) {
+	public GameEvent(final Type type, final Game game) {
 		this.type = type;
+        this.context = game;
 	}
     
+	public Game context;
+    public Type type;
 	public Player pilot = null;
 	public Collection<Card> diceRoll = null;
 	public List<Player> remainingPlayers = null;
-    public Type type = null;
     public CloudLevel level = null;
     public Boolean didPay = null;
-	public Player currentPlayer;
+	public Player currentPlayer = null;
+	public String winner = null;
+	public Move move = null;
+	public String cardsPayed = null;
 }
