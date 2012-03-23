@@ -39,6 +39,6 @@ public abstract class Player implements GameEventListener {
 	
 	@Override
 	public String toString() {
-		return name;
+		return getName();
 	}
 }

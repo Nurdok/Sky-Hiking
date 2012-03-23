@@ -1,7 +1,5 @@
 package com.rachum.amir.cloud9;
 
-import java.util.Collection;
-import java.util.List;
 
 public class GameEvent {
     
@@ -17,9 +15,6 @@ public class GameEvent {
     
 	public Game context;
     public Type type;
-	public Player pilot = null;
-	public Collection<Card> diceRoll = null;
-	public List<Player> remainingPlayers = null;
     public CloudLevel level = null;
     public Boolean didPay = null;
 	public Player currentPlayer = null;

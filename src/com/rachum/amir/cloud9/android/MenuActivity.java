@@ -14,7 +14,6 @@ public class MenuActivity extends Activity {
     }
     
     public void beginGame(final View view) {
-        setContentView(R.layout.game);
     	final Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
    }

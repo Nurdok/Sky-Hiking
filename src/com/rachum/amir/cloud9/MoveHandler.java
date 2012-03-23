@@ -3,29 +3,31 @@
  */
 package com.rachum.amir.cloud9;
 
-import java.util.concurrent.locks.Condition;
 
 /**
  * @author Rachum
  *
  */
 public class MoveHandler {
-    private final Condition cond;
     private Move move = null;
     
-    public MoveHandler(final Condition cond) {
-        this.cond = cond;
-	}
-	
-    void move(final Move move) {
+    public synchronized void move(final Move move) {
     	this.move = move;
-        cond.notifyAll();
+        notifyAll();
     }
 
 	/**
 	 * @return the move
 	 */
-	public Move getMove() {
+	public synchronized Move getMove() {
+        while (move == null) {
+        	try {
+				wait();
+			} catch (final InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
 		return move;
 	}
 

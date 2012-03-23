@@ -9,9 +9,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import com.rachum.amir.cloud9.GameEvent.Type;
 
@@ -26,6 +23,7 @@ public class Game extends Thread {
 	private final Collection<GameEventListener> listeners = new LinkedList<GameEventListener>();
 	public Collection<Card> diceRoll;
 	final Iterator<Player> pilotIterator;
+    public Player pilot;
     
 	private enum LevelOutcome {SUCCESS, CRASH;}
 	
@@ -68,7 +66,7 @@ public class Game extends Thread {
                     break;
 				}
                 
-				final Player pilot = getNextPilot();
+				setNextPilot();
                 
                 final LevelOutcome outcome = playLevel(level, remainingPlayers, pilot);
                 if (outcome == LevelOutcome.CRASH) {
@@ -92,12 +90,12 @@ public class Game extends Thread {
 		}
 	}
 
-	private Player getNextPilot() {
+	private void setNextPilot() {
         Player player = pilotIterator.next();
         while (!remainingPlayers.contains(player)) {
         	player = pilotIterator.next();
         }
-		return player;
+        pilot = player;
 	}
 
 	public LevelOutcome playLevel(final CloudLevel level,
@@ -109,36 +107,22 @@ public class Game extends Thread {
 		newRemainingPlayers.addAll(remainingPlayers);
 		for (final Player player : getRemainingPlayersInOrder()) {
 			if (player != pilot) {
-				final Lock lock = new ReentrantLock();
-                final Condition cond = lock.newCondition();
-                final MoveHandler handler = new MoveHandler(cond);
+                final MoveHandler handler = new MoveHandler();
                 player.play(handler, this);
-                try {
-					cond.wait();
-				} catch (final InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				final Move move = handler.getMove();
 				if (move == Move.LEAVE) {
 					player.score(level.getScore());
 					newRemainingPlayers.remove(player);
-                    announce(new GameEvent(Type.MOVE, this));
+                    final GameEvent event = new GameEvent(Type.MOVE, this);
+                    event.move = move;
+                    announce(event);
 				}
 			}
 		}
 		remainingPlayers.retainAll(newRemainingPlayers);
 		
-		final Lock lock = new ReentrantLock();
-		final Condition cond = lock.newCondition();
-		final PayHandler handler = new PayHandler(cond);
+		final PayHandler handler = new PayHandler();
 		pilot.pay(handler, this);
-		try {
-			cond.wait();
-		} catch (final InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		if (handler.didPay()) {
             return LevelOutcome.SUCCESS;
 		}
@@ -147,8 +131,16 @@ public class Game extends Thread {
 	}
 	
 	private Collection<? extends Player> getRemainingPlayersInOrder() {
-		// TODO Auto-generated method stub
-		return null;
+        final List<Player> newRemainingPlayers = new LinkedList<Player>();
+        newRemainingPlayers.add(pilot);
+        final Iterator<Player> iterator = new InfiniteIterator(players);
+        while (iterator.next() != pilot) {}
+        Player player = iterator.next();
+        while (player != pilot) {
+        	newRemainingPlayers.add(player);
+            player = iterator.next();
+        }
+		return newRemainingPlayers;
 	}
 
 	private Map<Player, Integer> scoreboard() {
