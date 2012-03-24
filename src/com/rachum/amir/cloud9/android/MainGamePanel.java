@@ -21,6 +21,7 @@ import com.rachum.amir.cloud9.RiskyPlayer;
 import com.rachum.amir.util.range.Range;
 
 public class MainGamePanel extends LinearLayout implements GameEventListener {
+    private final TextView scoreboard;
     private final TextView log;
     private GameEvent event;
     private final Handler handler;
@@ -29,6 +30,8 @@ public class MainGamePanel extends LinearLayout implements GameEventListener {
 		super(context);
         this.setOrientation(VERTICAL);
         handler = new Handler();
+        scoreboard = new TextView(context);
+        addView(scoreboard);
         log = new TextView(context);
         addView(log);
         final Button stay = new Button(context);
@@ -75,92 +78,69 @@ public class MainGamePanel extends LinearLayout implements GameEventListener {
         game.start();
 	}
     
-    @Override
-    public void handleEvent(final GameEvent event) {
+	@Override
+	public void handleEvent(final GameEvent event) {
+        handler.post(new Runnable() {
+			@Override
+			public void run() {
+                handleEventAux(event);
+                updateScores(event.context.players);
+			}
+		});
+	}
+    
+	private void handleEventAux(final GameEvent event){
 		switch (event.type) {
 		case DICE_ROLLED:
-            handler.post(new Runnable() {
-				@Override
-				public void run() {
-        			log.append(event.context.pilot + " rolled " + event.context.diceRoll + "\n");
-				}
-            });
-		    break;
+			log.append(event.context.pilot + " rolled " + event.context.diceRoll + "\n");
+			break;
 		case GAME_BEGIN:
-            handler.post(new Runnable() {
-				@Override
-				public void run() {
-					log.setText("Starting a new game!\n");
-					log.append("Players are: ");
-					for (final Player player : event.context.players) {
-						log.append(player + " ");
-					}
-					log.append("\n");
-				}
-			});
+			log.setText("Starting a new game!\n");
+			log.append("Players are: ");
+			for (final Player player : event.context.players) {
+				log.append(player + " ");
+			}
+			log.append("\n");
 			break;
 		case GAME_END:
-            handler.post(new Runnable() {
-            	@Override
-                public void run() {
-        			log.append("Game is over! the winner is " + event.winner);
-            	}
-            });
+			log.append("Game is over! the winner is " + event.winner);
 			break;
 		case LEVEL_BEGIN:
-            handler.post(new Runnable() {
-            	@Override
-                public void run() {
-            		log.setText("Starting a new level with " + event.context.remainingPlayers + "\n");
-            	}
-            });
+			log.setText("Starting a new level with " + event.context.remainingPlayers + "\n");
 			break;
 		case LEVEL_END:
 			break;
 		case MOVE:
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                	log.append(event.currentPlayer + " is ");
-                	if (event.move == Move.STAY) {
-                		log.append("staying!\n");
-                	} else {
-                		log.append("leaving :(\n");
-                	}
-                }
-            });
+			log.append(event.currentPlayer + " is ");
+			if (event.move == Move.STAY) {
+				log.append("staying!\n");
+			} else {
+				log.append("leaving :(\n");
+			}
 			break;
 		case PAY:
-            handler.post(new Runnable() {
-            	@Override
-                public void run() {
-            		log.append(event.context.pilot + " ");
-            		if (event.didPay) {
-            			log.append("payed " + event.cardsPayed + " and we are moving on to " +
-            			"the next level.\n");
-            		}
-            		else {
-            			log.append("didn't have the cards. We're crashing...\n");
-            		}
-            	}
-            });
-            break;
+			log.append(event.context.pilot + " ");
+			if (event.didPay) {
+				log.append("payed " + event.cardsPayed + " and we are moving on to " +
+				"the next level.\n");
+			}
+			else {
+				log.append("didn't have the cards. We're crashing...\n");
+			}
+			break;
 		case ROUND_BEGIN:
-			handler.post(new Runnable() {
-				@Override
-				public void run() {
-					log.setText("New Round Begins!\n");
-            	}
-            });
+			log.setText("New Round Begins!\n");
 			break;
 		case ROUND_END:
-            handler.post(new Runnable() {
-            	@Override
-                public void run() {
-            		log.append("Round is over!\n");
-            	}
-            });
+			log.append("Round is over!\n");
 			break;
 		}
-    }
+	}
+
+	private void updateScores(final List<Player> players) {
+		scoreboard.setText("");
+		for (final Player player : players) {
+			scoreboard.append(player + ": " + player.getScore() + "\n");
+		}
+	}
 }
