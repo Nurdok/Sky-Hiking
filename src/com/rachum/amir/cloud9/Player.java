@@ -46,4 +46,7 @@ public abstract class Player implements GameEventListener {
 	public String toString() {
 		return getName();
 	}
+	public Hand getHand() {
+		return hand;
+	}
 }

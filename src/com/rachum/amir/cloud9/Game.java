@@ -30,6 +30,9 @@ public class Game extends Thread {
 	public Game(final List<Player> players) {
 		super();
 		this.players = players;
+        for (final Player player : players) {
+        	registerListener(player);
+        }
 		deck = new Deck();
 		for (final Player player : players) {
             player.gameStart(deck);
@@ -55,7 +58,9 @@ public class Game extends Thread {
 			final List<Player> remainingPlayers = new LinkedList<Player>(players);
             announce(new GameEvent(Type.ROUND_BEGIN, this));
 			for (final CloudLevel level : CloudLevel.gameLevels()) {
-                announce(new GameEvent(Type.LEVEL_BEGIN, this));
+                final GameEvent event = new GameEvent(Type.LEVEL_BEGIN, this);
+                event.level = level;
+                announce(event);
                 
 				if (level.getDiceNumber() == 0) {
 					for (final Player player : remainingPlayers) {

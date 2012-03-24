@@ -22,9 +22,11 @@ import com.rachum.amir.util.range.Range;
 
 public class MainGamePanel extends LinearLayout implements GameEventListener {
     private final TextView scoreboard;
+    private final TextView hand;
     private final TextView log;
     private GameEvent event;
     private final Handler handler;
+    private final Player humanPlayer;
     
 	public MainGamePanel(final Context context) {
 		super(context);
@@ -32,6 +34,8 @@ public class MainGamePanel extends LinearLayout implements GameEventListener {
         handler = new Handler();
         scoreboard = new TextView(context);
         addView(scoreboard);
+        hand = new TextView(context);
+        addView(hand);
         log = new TextView(context);
         addView(log);
         final Button stay = new Button(context);
@@ -40,20 +44,33 @@ public class MainGamePanel extends LinearLayout implements GameEventListener {
         final Button leave = new Button(context);
         leave.setText("Leave");
         addView(leave);
+        final Button pay = new Button(context);
+        pay.setText("Pay");
+        addView(pay);
+        final Button payWithWild = new Button(context);
+        payWithWild.setText("Pay Wild");
+        addView(payWithWild);
+        final Button dontPay = new Button(context);
+        dontPay.setText("Don't Pay");
+        addView(dontPay);
         
         final List<Player> players = new LinkedList<Player>();
         for (final int i : new Range(3)) {
         	players.add(new RiskyPlayer("Risky" + i));
         }
         //players.add(new HumanPlayer("Amir", context));
-        players.add(new Player("Amir") {
+        humanPlayer = new Player("Amir") {
 			
 			@Override
 			public void play(final MoveHandler handler, final Game game) {
+				stay.setVisibility(VISIBLE);
+				leave.setVisibility(VISIBLE);
 				stay.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(final View v) {
 						handler.move(Move.STAY);
+						stay.setVisibility(INVISIBLE);
+						leave.setVisibility(INVISIBLE);
 					}
 				});
 
@@ -61,18 +78,25 @@ public class MainGamePanel extends LinearLayout implements GameEventListener {
 					@Override
 					public void onClick(final View v) {
 						handler.move(Move.LEAVE);
+						stay.setVisibility(INVISIBLE);
+						leave.setVisibility(INVISIBLE);
 					}
 				});
-                //MainGamePanel.this.addView(stay);
-                //MainGamePanel.this.addView(leave);
 			}
 			
 			@Override
 			public void pay(final PayHandler handler, final Game context) {
-				// TODO Auto-generated method stub
-                handler.pay(false, null);
+                if (humanPlayer.getHand().contains(context.diceRoll)) {
+                	pay.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(final View v) {
+                            handler.pay(true, context.diceRoll);
+						}
+					});
+                }
 			}
-		});
+		};
+        players.add(humanPlayer);
         final Game game = new Game(players);
         game.registerListener(this);
         game.start();
@@ -85,6 +109,7 @@ public class MainGamePanel extends LinearLayout implements GameEventListener {
 			public void run() {
                 handleEventAux(event);
                 updateScores(event.context.players);
+                updateHand();
 			}
 		});
 	}
@@ -106,7 +131,8 @@ public class MainGamePanel extends LinearLayout implements GameEventListener {
 			log.append("Game is over! the winner is " + event.winner);
 			break;
 		case LEVEL_BEGIN:
-			log.setText("Starting a new level with " + event.context.remainingPlayers + "\n");
+			log.setText("Starting " + event.level + " with " +
+					event.context.remainingPlayers + "\n");
 			break;
 		case LEVEL_END:
 			break;
@@ -142,5 +168,9 @@ public class MainGamePanel extends LinearLayout implements GameEventListener {
 		for (final Player player : players) {
 			scoreboard.append(player + ": " + player.getScore() + "\n");
 		}
+	}
+    
+	private void updateHand() {
+		hand.setText("Hand: " + humanPlayer.getHand().getCards());
 	}
 }
