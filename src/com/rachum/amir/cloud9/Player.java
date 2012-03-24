@@ -3,7 +3,12 @@ package com.rachum.amir.cloud9;
 
 
 public abstract class Player implements GameEventListener {
-    protected String name;
+    public Player(final String name) {
+		super();
+		this.name = name;
+	}
+
+	protected String name;
     private int score;
 	protected Hand hand;
     

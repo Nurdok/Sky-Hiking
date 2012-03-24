@@ -21,7 +21,7 @@ public class PayHandler {
 	/**
 	 * @return the move
 	 */
-	public Boolean didPay() {
+	public synchronized Boolean didPay() {
         while (didPay == null) {
         	try {
 				wait();

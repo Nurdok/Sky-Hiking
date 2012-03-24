@@ -18,7 +18,7 @@ public class GameEvent {
     public CloudLevel level = null;
     public Boolean didPay = null;
 	public Player currentPlayer = null;
-	public String winner = null;
+	public Player winner = null;
 	public Move move = null;
 	public String cardsPayed = null;
 }

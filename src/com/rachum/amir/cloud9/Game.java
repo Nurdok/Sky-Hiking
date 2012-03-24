@@ -83,7 +83,9 @@ public class Game extends Thread {
 			}
             for (final Player player : players) {
             	if (player.getScore() >= 50) {
-                    announce(new GameEvent(Type.GAME_END, this));
+                    final GameEvent event = new GameEvent(Type.GAME_END, this);
+                    event.winner = player;
+                    announce(event);
                     return;
             	}
             }
@@ -113,10 +115,11 @@ public class Game extends Thread {
 				if (move == Move.LEAVE) {
 					player.score(level.getScore());
 					newRemainingPlayers.remove(player);
-                    final GameEvent event = new GameEvent(Type.MOVE, this);
-                    event.move = move;
-                    announce(event);
 				}
+				final GameEvent event = new GameEvent(Type.MOVE, this);
+				event.move = move;
+                event.currentPlayer = player;
+				announce(event);
 			}
 		}
 		remainingPlayers.retainAll(newRemainingPlayers);

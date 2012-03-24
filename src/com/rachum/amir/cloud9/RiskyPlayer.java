@@ -6,8 +6,7 @@ package com.rachum.amir.cloud9;
 public class RiskyPlayer extends Player {
     
 	public RiskyPlayer(final String name) {
-		super();
-		this.name = name;
+		super(name);
 	}
 
 	@Override

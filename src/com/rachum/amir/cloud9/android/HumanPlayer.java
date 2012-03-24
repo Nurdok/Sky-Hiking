@@ -21,15 +21,14 @@ public class HumanPlayer extends Player {
     
 	private final Context top;
 
-	public HumanPlayer(final Context top) {
-		super();
+	public HumanPlayer(final String name, final Context top) {
+		super(name);
 		this.top = top;
 	}
 
 	@Override
 	public void play(final MoveHandler handler, final Game context) {
 		// TODO Auto-generated method stub
-        
     	final Button stay = new Button(top);
         stay.setText("Stay");
         stay.setOnClickListener(new View.OnClickListener() {
@@ -48,10 +47,11 @@ public class HumanPlayer extends Player {
 			}
 		});
 	}
-
+    
 	@Override
 	public void pay(final PayHandler handler, final Game context) {
 		// TODO Auto-generated method stub
+        handler.pay(false, null);
 
 	}
 
