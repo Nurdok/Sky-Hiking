@@ -16,6 +16,7 @@ public class PayHandler {
     public synchronized void pay(final boolean pay, final Collection<Card> cards) {
     	this.didPay = pay;
         this.cards = cards;
+        notifyAll();
     }
 
 	/**

@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.os.Handler;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,8 +13,6 @@ import com.rachum.amir.cloud9.Game;
 import com.rachum.amir.cloud9.GameEvent;
 import com.rachum.amir.cloud9.GameEventListener;
 import com.rachum.amir.cloud9.Move;
-import com.rachum.amir.cloud9.MoveHandler;
-import com.rachum.amir.cloud9.PayHandler;
 import com.rachum.amir.cloud9.Player;
 import com.rachum.amir.cloud9.RiskyPlayer;
 import com.rachum.amir.util.range.Range;
@@ -24,7 +21,6 @@ public class MainGamePanel extends LinearLayout implements GameEventListener {
     private final TextView scoreboard;
     private final TextView hand;
     private final TextView log;
-    private GameEvent event;
     private final Handler handler;
     private final Player humanPlayer;
     
@@ -38,64 +34,36 @@ public class MainGamePanel extends LinearLayout implements GameEventListener {
         addView(hand);
         log = new TextView(context);
         addView(log);
+        
+        final LinearLayout selectionPanel = new LinearLayout(context);
         final Button stay = new Button(context);
         stay.setText("Stay");
-        addView(stay);
+        selectionPanel.addView(stay);
         final Button leave = new Button(context);
         leave.setText("Leave");
-        addView(leave);
+        selectionPanel.addView(leave);
         final Button pay = new Button(context);
         pay.setText("Pay");
-        addView(pay);
+        selectionPanel.addView(pay);
         final Button payWithWild = new Button(context);
         payWithWild.setText("Pay Wild");
-        addView(payWithWild);
+        selectionPanel.addView(payWithWild);
         final Button dontPay = new Button(context);
         dontPay.setText("Don't Pay");
-        addView(dontPay);
+        selectionPanel.addView(dontPay);
+        addView(selectionPanel);
+        
+        stay.setEnabled(false);
+        leave.setEnabled(false);
+        pay.setEnabled(false);
+        dontPay.setEnabled(false);
+        payWithWild.setEnabled(false);
         
         final List<Player> players = new LinkedList<Player>();
         for (final int i : new Range(3)) {
         	players.add(new RiskyPlayer("Risky" + i));
         }
-        //players.add(new HumanPlayer("Amir", context));
-        humanPlayer = new Player("Amir") {
-			
-			@Override
-			public void play(final MoveHandler handler, final Game game) {
-				stay.setVisibility(VISIBLE);
-				leave.setVisibility(VISIBLE);
-				stay.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(final View v) {
-						handler.move(Move.STAY);
-						stay.setVisibility(INVISIBLE);
-						leave.setVisibility(INVISIBLE);
-					}
-				});
-
-				leave.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(final View v) {
-						handler.move(Move.LEAVE);
-						stay.setVisibility(INVISIBLE);
-						leave.setVisibility(INVISIBLE);
-					}
-				});
-			}
-			
-			@Override
-			public void pay(final PayHandler handler, final Game context) {
-                if (humanPlayer.getHand().contains(context.diceRoll)) {
-                	pay.setOnClickListener(new View.OnClickListener() {
-						@Override
-						public void onClick(final View v) {
-                            handler.pay(true, context.diceRoll);
-						}
-					});
-                }
-			}
-		};
+        humanPlayer = new HumanPlayer("Amir", handler, stay, leave, pay, payWithWild, dontPay);
         players.add(humanPlayer);
         final Game game = new Game(players);
         game.registerListener(this);
