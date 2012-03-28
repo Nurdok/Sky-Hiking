@@ -141,7 +141,7 @@ public class Game extends Thread {
 	private Collection<? extends Player> getRemainingPlayersInOrder() {
         final List<Player> newRemainingPlayers = new LinkedList<Player>();
         newRemainingPlayers.add(pilot);
-        final Iterator<Player> iterator = new InfiniteIterator(players);
+        final Iterator<Player> iterator = new InfiniteIterator(remainingPlayers);
         while (iterator.next() != pilot) {}
         Player player = iterator.next();
         while (player != pilot) {
