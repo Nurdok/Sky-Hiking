@@ -92,7 +92,7 @@ public class GameActivity extends Activity implements GameEventListener {
 			log.append("Game is over! the winner is " + event.winner);
 			break;
 		case LEVEL_BEGIN:
-			log.append("Starting " + event.level + " with " +
+			log.append("\nStarting " + event.level + " with " +
 					event.context.remainingPlayers + "\n");
 			break;
 		case LEVEL_END:
@@ -116,7 +116,7 @@ public class GameActivity extends Activity implements GameEventListener {
 			}
 			break;
 		case ROUND_BEGIN:
-			log.append("New Round Begins!\n");
+			log.append("\nNew Round Begins!\n");
 			break;
 		case ROUND_END:
 			log.append("Round is over!\n");
