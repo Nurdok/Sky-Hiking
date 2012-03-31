@@ -149,12 +149,4 @@ public class Game extends Thread {
         }
 		return newRemainingPlayers;
 	}
-
-	private Map<Player, Integer> scoreboard() {
-		final Map<Player, Integer> scoreboard = new HashMap<Player, Integer>();
-		for (final Player player : players) {
-			scoreboard.put(player, player.getScore());
-        }
-        return scoreboard;
-	}
 }

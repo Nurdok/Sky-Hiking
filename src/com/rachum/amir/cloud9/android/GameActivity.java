@@ -1,14 +1,19 @@
 package com.rachum.amir.cloud9.android;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.rachum.amir.cloud9.Card;
@@ -22,7 +27,6 @@ import com.rachum.amir.util.range.Range;
 
 public class GameActivity extends Activity implements GameEventListener {
     private TextView scoreboard;
-    private TextView hand;
     private TextView log;
     private Handler handler;
     private Player humanPlayer;
@@ -34,9 +38,7 @@ public class GameActivity extends Activity implements GameEventListener {
         setContentView(R.layout.game);
         handler = new Handler();
         scoreboard = (TextView) findViewById(R.id.scoreboard);
-        hand = (TextView) findViewById(R.id.handinfo);
         log = (TextView) findViewById(R.id.log);
-        //log.setMovementMethod(new ScrollingMovementMethod());
         final Button stay = (Button) findViewById(R.id.stay);
         final Button leave = (Button) findViewById(R.id.leave);
         final Button pay = (Button) findViewById(R.id.pay);
@@ -120,6 +122,13 @@ public class GameActivity extends Activity implements GameEventListener {
 			log.append("Round is over!\n");
 			break;
 		}
+		final ScrollView logParent = (ScrollView) findViewById(R.id.log_scrollview);
+		logParent.post(new Runnable() {
+			@Override
+			public void run() {
+				logParent.fullScroll(View.FOCUS_DOWN);
+			}
+		});
 	}
 
 	private void updateScores(final List<Player> players) {
@@ -130,6 +139,18 @@ public class GameActivity extends Activity implements GameEventListener {
 	}
     
 	private void updateHand(Collection<Card> cards) {
-		hand.setText("Hand: " + cards);
+		@SuppressWarnings("serial")
+		Map<Card, Integer> counterMap = new HashMap<Card, Integer>() {{
+			put(Card.GREEN, R.id.greencount);
+			put(Card.RED, R.id.redcount);
+			put(Card.PURPLE, R.id.purplecount);
+			put(Card.YELLOW, R.id.yellowcount);
+			put(Card.WILD, R.id.wildcount);
+		}};
+		
+		for (Card cardType : counterMap.keySet()) {
+			((TextView) findViewById(counterMap.get(cardType)))
+				.setText(((Integer)Collections.frequency(cards, cardType)).toString());
+		}
 	}
 }

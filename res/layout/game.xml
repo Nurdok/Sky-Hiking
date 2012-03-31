@@ -7,21 +7,72 @@
         android:id="@+id/scoreboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:text="Scoreboard" />
+        android:layout_alignParentTop="true" />
 
-    <TextView
+    <TableLayout
+        android:orientation="horizontal"
         android:id="@+id/handinfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/scoreboard"
-        android:text="Hand" />
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:stretchColumns="*"
+        android:layout_alignParentBottom="true" >
+        
+        <TableRow>
+        
+		    <TextView
+		        android:id="@+id/redcount"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:textColor="#FF0000"
+		        android:textSize="25sp"
+		        android:gravity="center"
+		        android:text="0" />
+		    
+		    <TextView
+		        android:id="@+id/greencount"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:textColor="#009405"
+		        android:textSize="25sp"
+		        android:gravity="center"
+		        android:text="0" />
+		    
+		    <TextView
+		        android:id="@+id/yellowcount"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:textColor="#DDFF00"
+		        android:textSize="25sp"
+		        android:gravity="center"
+		        android:text="0" />
+		    
+		    <TextView
+		        android:id="@+id/purplecount"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:textColor="#8500C7"
+		        android:textSize="25sp"
+		        android:gravity="center"
+		        android:text="0" />
+		    
+		    <TextView
+		        android:id="@+id/wildcount"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:textColor="#FFFFFF"
+		        android:gravity="center"
+		        android:textSize="25sp"
+		        android:text="0" />
+		    
+	    </TableRow>
+	    
+	</TableLayout>
     
     <LinearLayout
-        android:id="@+id/linearLayout1"
+        android:id="@+id/buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
-        android:layout_alignParentBottom="true" >
+        android:layout_above="@+id/handinfo" >
 
         <Button
             android:id="@+id/stay"
@@ -60,10 +111,11 @@
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/log_scrollview"
        	android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-		android:layout_above="@id/linearLayout1"
-        android:layout_below="@+id/handinfo" >
+		android:layout_above="@+id/buttons"
+        android:layout_below="@+id/scoreboard" >
         
 	    <TextView
 	        android:layout_width="wrap_content"
@@ -72,6 +124,6 @@
 	        android:text="" />
 	    
     </ScrollView>
-
+    
 
 </RelativeLayout>
