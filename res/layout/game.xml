@@ -1,31 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
 
     <TextView
         android:id="@+id/scoreboard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:text="Scoreboard" />
 
     <TextView
         android:id="@+id/handinfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/scoreboard"
         android:text="Hand" />
-
-    <TextView
-        android:id="@+id/log"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxLines="20"
-        android:text="" />
-
+    
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content" 
+        android:layout_alignParentBottom="true" >
 
         <Button
             android:id="@+id/stay"
@@ -63,4 +59,19 @@
             android:text="Don&apos;t Pay" />
     </LinearLayout>
 
-</TableLayout>
+    <ScrollView
+       	android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+		android:layout_above="@id/linearLayout1"
+        android:layout_below="@+id/handinfo" >
+        
+	    <TextView
+	        android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+	        android:id="@+id/log"
+	        android:text="" />
+	    
+    </ScrollView>
+
+
+</RelativeLayout>

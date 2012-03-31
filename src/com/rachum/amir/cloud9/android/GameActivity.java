@@ -1,5 +1,6 @@
 package com.rachum.amir.cloud9.android;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.rachum.amir.cloud9.Card;
 import com.rachum.amir.cloud9.Game;
 import com.rachum.amir.cloud9.GameEvent;
 import com.rachum.amir.cloud9.GameEventListener;
@@ -34,7 +36,7 @@ public class GameActivity extends Activity implements GameEventListener {
         scoreboard = (TextView) findViewById(R.id.scoreboard);
         hand = (TextView) findViewById(R.id.handinfo);
         log = (TextView) findViewById(R.id.log);
-        log.setMovementMethod(new ScrollingMovementMethod());
+        //log.setMovementMethod(new ScrollingMovementMethod());
         final Button stay = (Button) findViewById(R.id.stay);
         final Button leave = (Button) findViewById(R.id.leave);
         final Button pay = (Button) findViewById(R.id.pay);
@@ -60,12 +62,13 @@ public class GameActivity extends Activity implements GameEventListener {
     
 	@Override
 	public void handleEvent(final GameEvent event) {
+		final Collection<Card> cards = new LinkedList<Card>(humanPlayer.getHand().getCards());
         handler.post(new Runnable() {
 			@Override
 			public void run() {
                 handleEventAux(event);
                 updateScores(event.context.players);
-                updateHand();
+                updateHand(cards);
 			}
 		});
 	}
@@ -126,7 +129,7 @@ public class GameActivity extends Activity implements GameEventListener {
 		}
 	}
     
-	private void updateHand() {
-		hand.setText("Hand: " + humanPlayer.getHand().getCards());
+	private void updateHand(Collection<Card> cards) {
+		hand.setText("Hand: " + cards);
 	}
 }

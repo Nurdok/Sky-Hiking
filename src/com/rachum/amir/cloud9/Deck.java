@@ -50,6 +50,7 @@ public class Deck {
         		Collections.shuffle(cards);
                 assert(cards.size() + discard.size() == 76);
             }
+            assert(!cards.isEmpty());
         	cardsDrawn.add(cards.remove(0));
 		}
         logger.info("Current deck: " + this);

@@ -18,7 +18,7 @@ import com.rachum.amir.cloud9.GameEvent.Type;
  */
 public class Game extends Thread {
 	public final List<Player> players;
-	public final List<Player> remainingPlayers;
+	public List<Player> remainingPlayers;
 	private final Deck deck;
 	private final Collection<GameEventListener> listeners = new LinkedList<GameEventListener>();
 	public Collection<Card> diceRoll;
@@ -55,7 +55,7 @@ public class Game extends Thread {
 	public void run() {
         announce(new GameEvent(Type.GAME_BEGIN, this));
 		while (true) {
-			final List<Player> remainingPlayers = new LinkedList<Player>(players);
+			remainingPlayers = new LinkedList<Player>(players);
             announce(new GameEvent(Type.ROUND_BEGIN, this));
 			for (final CloudLevel level : CloudLevel.gameLevels()) {
                 final GameEvent event = new GameEvent(Type.LEVEL_BEGIN, this);
@@ -73,7 +73,7 @@ public class Game extends Thread {
                 
 				setNextPilot();
                 
-                final LevelOutcome outcome = playLevel(level, remainingPlayers, pilot);
+                final LevelOutcome outcome = playLevel(level);
                 if (outcome == LevelOutcome.CRASH) {
                     announce(new GameEvent(Type.LEVEL_END, this));
                     announce(new GameEvent(Type.ROUND_END, this));
@@ -105,8 +105,7 @@ public class Game extends Thread {
         pilot = player;
 	}
 
-	public LevelOutcome playLevel(final CloudLevel level,
-			final Collection<Player> remainingPlayers, final Player pilot) {
+	public LevelOutcome playLevel(final CloudLevel level) {
 		diceRoll = Dice.roll(level.getDiceNumber());
         announce(new GameEvent(Type.DICE_ROLLED, this));
         
