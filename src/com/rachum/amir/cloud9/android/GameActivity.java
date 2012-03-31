@@ -1,13 +1,16 @@
 package com.rachum.amir.cloud9.android;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import android.app.Activity;
+import android.hardware.Camera.ShutterCallback;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
@@ -30,6 +33,9 @@ public class GameActivity extends Activity implements GameEventListener {
     private TextView log;
     private Handler handler;
     private Player humanPlayer;
+    private List<String> names = 
+    	Arrays.asList("Phil", "Johnny", "Sharon", "Tammy", "Dan", "George",
+    			"Joel", "Jeff", "Arnold", "Jack", "Gary", "Ben", "Fred");
     
     /** Called when the activity is first created. */
     @Override
@@ -51,9 +57,10 @@ public class GameActivity extends Activity implements GameEventListener {
         dontPay.setEnabled(false);
         payWithWild.setEnabled(false);
         
+        Collections.shuffle(names);
         final List<Player> players = new LinkedList<Player>();
         for (final int i : new Range(3)) {
-        	players.add(new RiskyPlayer("Risky" + i));
+        	players.add(new RiskyPlayer(names.get(i)));
         }
         humanPlayer = new HumanPlayer("Amir", handler, stay, leave, pay, payWithWild, dontPay);
         players.add(humanPlayer);
