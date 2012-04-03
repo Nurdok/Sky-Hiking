@@ -20,6 +20,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.rachum.amir.cloud9.Card;
+import com.rachum.amir.cloud9.CloudLevel;
 import com.rachum.amir.cloud9.Game;
 import com.rachum.amir.cloud9.GameEvent;
 import com.rachum.amir.cloud9.GameEventListener;
@@ -78,10 +79,17 @@ public class GameActivity extends Activity implements GameEventListener {
                 handleEventAux(event);
                 updateScores(event.context.players);
                 updateHand(cards);
+                updateLevelInfo(event.level);
 			}
 		});
 	}
     
+	private void updateLevelInfo(CloudLevel level) {
+		if (level != null) {
+			((TextView) findViewById(R.id.level)).setText(level.toString());
+		}
+	}
+
 	private void handleEventAux(final GameEvent event){
 		switch (event.type) {
 		case DICE_ROLLED:
