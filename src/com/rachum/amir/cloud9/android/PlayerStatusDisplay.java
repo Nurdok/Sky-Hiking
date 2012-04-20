@@ -4,6 +4,7 @@ import com.rachum.amir.cloud9.Move;
 import com.rachum.amir.cloud9.Player;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,7 +18,11 @@ public class PlayerStatusDisplay extends LinearLayout {
 		super(context);
 		this.player = player;
 		playerName = new TextView(context);
+		this.setPadding(10, 20, 10, 0);
+		playerName.setPadding(0, 0, 20, 0);
+		playerName.setTextSize(20);
 		statusImage = new ImageView(context);
+		setPlaying(true);
 		unsetStatus();
 		updateScore();
 		addView(playerName);
@@ -34,15 +39,23 @@ public class PlayerStatusDisplay extends LinearLayout {
 			statusImage.setImageResource(R.drawable.stay);
 			break;
 		}
-		statusImage.getLayoutParams().height = 20;
-		statusImage.getLayoutParams().width = 20;
+		statusImage.getLayoutParams().height = 40;
+		statusImage.getLayoutParams().width = 40;
+	}
+	
+	public void setPlaying(boolean playing) {
+		if (playing) {
+			playerName.setTextColor(Color.BLACK);
+		} else {
+			playerName.setTextColor(Color.GRAY);
+		}
 	}
 	
 	public void setPilot() {
 		statusImage.setVisibility(VISIBLE);
-		statusImage.setImageResource(R.drawable.ic_launcher); //TODO: change to pilot image
-		statusImage.getLayoutParams().height = 20;
-		statusImage.getLayoutParams().width = 20;
+		statusImage.setImageResource(R.drawable.pilot); //TODO: change to pilot image
+		statusImage.getLayoutParams().height = 40;
+		statusImage.getLayoutParams().width = 40;
 	}
 	
 	public void unsetStatus() {
@@ -50,6 +63,6 @@ public class PlayerStatusDisplay extends LinearLayout {
 	}
 	
 	public void updateScore() {
-		playerName.setText(playerName + " (" + player.getScore() + ")");
+		playerName.setText(player.getName() + " (" + player.getScore() + ")");
 	}
 }

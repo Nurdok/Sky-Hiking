@@ -141,7 +141,9 @@ public class GameActivity extends Activity implements GameEventListener {
 					event.context.remainingPlayers + "\n");
 			for (Player player : event.context.players) {
 				playerStatus.get(player).unsetStatus();
+				playerStatus.get(player).setPlaying(event.context.remainingPlayers.contains(player));
 			}
+			playerStatus.get(event.context.pilot).setPilot();
 			break;
 		case LEVEL_END:
 			break;

@@ -24,55 +24,60 @@
         android:orientation="horizontal"
         android:id="@+id/handinfo"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
         android:stretchColumns="*"
         android:layout_alignParentBottom="true" >
         
         <TableRow>
         
-		    <TextView
+		    <Button
 		        android:id="@+id/redcount"
+		        style="@style/CardCount"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:textColor="#FF0000"
-		        android:textSize="25sp"
 		        android:gravity="center"
+		        android:background="@drawable/cards"
 		        android:text="0" />
 		    
-		    <TextView
+		    <Button
 		        android:id="@+id/greencount"
+		        style="@style/CardCount"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:textColor="#009405"
-		        android:textSize="25sp"
 		        android:gravity="center"
+		        android:background="@drawable/cards"
 		        android:text="0" />
 		    
-		    <TextView
+		    <Button
 		        android:id="@+id/yellowcount"
+		        style="@style/CardCount"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:textColor="#DDFF00"
-		        android:textSize="25sp"
 		        android:gravity="center"
+		        android:background="@drawable/cards"
 		        android:text="0" />
 		    
-		    <TextView
+		    <Button
 		        android:id="@+id/purplecount"
+		        style="@style/CardCount"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:textColor="#8500C7"
-		        android:textSize="25sp"
 		        android:gravity="center"
+		        android:background="@drawable/cards"
 		        android:text="0" />
 		    
-		    <TextView
+		    <Button
 		        android:id="@+id/wildcount"
+		        style="@style/CardCount"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:textColor="#FFFFFF"
 		        android:gravity="center"
-		        android:textSize="25sp"
+		        android:background="@drawable/cards"
 		        android:text="0" />
 		    
 	    </TableRow>

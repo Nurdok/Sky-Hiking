@@ -63,6 +63,8 @@ public class Game extends Thread {
 			remainingPlayers = new LinkedList<Player>(players);
             announce(new GameEvent(Type.ROUND_BEGIN, this));
 			for (final CloudLevel level : CloudLevel.gameLevels()) {
+				setNextPilot();
+				
                 final GameEvent event = new GameEvent(Type.LEVEL_BEGIN, this);
                 event.level = level;
                 announce(event);
@@ -71,12 +73,11 @@ public class Game extends Thread {
 					for (final Player player : remainingPlayers) {
 						player.score(level.getScore()); //TODO: move to listener
 					}
-                    announce(new GameEvent(Type.LEVEL_BEGIN, this));
+                    announce(new GameEvent(Type.LEVEL_END, this));
                     announce(new GameEvent(Type.ROUND_END, this));
                     break;
 				}
                 
-				setNextPilot();
                 
                 final LevelOutcome outcome = playLevel(level);
                 if (outcome == LevelOutcome.CRASH) {
