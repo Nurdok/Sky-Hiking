@@ -1,5 +1,7 @@
 package com.rachum.amir.cloud9;
 
+import java.util.Collection;
+
 
 public class GameEvent {
     
@@ -20,5 +22,5 @@ public class GameEvent {
 	public Player currentPlayer = null;
 	public Player winner = null;
 	public Move move = null;
-	public String cardsPayed = null;
+	public Collection<Card> cardsPayed = null;
 }

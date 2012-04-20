@@ -11,7 +11,13 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int background=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int leave=0x7f020002;
+        public static final int level=0x7f020003;
+        public static final int levelselected=0x7f020004;
+        public static final int skyhiking_background=0x7f020005;
+        public static final int stay=0x7f020006;
     }
     public static final class id {
         public static final int buttons=0x7f050008;

@@ -7,20 +7,20 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-
 import android.app.Activity;
-import android.hardware.Camera.ShutterCallback;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
 import com.rachum.amir.cloud9.Card;
 import com.rachum.amir.cloud9.CloudLevel;
+import com.rachum.amir.cloud9.EventHandler;
 import com.rachum.amir.cloud9.Game;
 import com.rachum.amir.cloud9.GameEvent;
 import com.rachum.amir.cloud9.GameEventListener;
@@ -30,10 +30,12 @@ import com.rachum.amir.cloud9.RiskyPlayer;
 import com.rachum.amir.util.range.Range;
 
 public class GameActivity extends Activity implements GameEventListener {
-    private TextView scoreboard;
+    private LinearLayout scoreboard;
     private TextView log;
     private Handler handler;
     private Player humanPlayer;
+    private Map<Player, PlayerStatusDisplay> playerStatus = 
+    	new HashMap<Player, PlayerStatusDisplay>();
     private List<String> names = 
     	Arrays.asList("Phil", "Johnny", "Sharon", "Tammy", "Dan", "George",
     			"Joel", "Jeff", "Arnold", "Jack", "Gary", "Ben", "Fred");
@@ -44,7 +46,7 @@ public class GameActivity extends Activity implements GameEventListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game);
         handler = new Handler();
-        scoreboard = (TextView) findViewById(R.id.scoreboard);
+        scoreboard = (LinearLayout) findViewById(R.id.scoreboard);
         log = (TextView) findViewById(R.id.log);
         final Button stay = (Button) findViewById(R.id.stay);
         final Button leave = (Button) findViewById(R.id.leave);
@@ -65,13 +67,18 @@ public class GameActivity extends Activity implements GameEventListener {
         }
         humanPlayer = new HumanPlayer("Amir", handler, stay, leave, pay, payWithWild, dontPay);
         players.add(humanPlayer);
+        for (Player player : players) {
+        	PlayerStatusDisplay display = new PlayerStatusDisplay(this, player);
+        	scoreboard.addView(display);
+        	playerStatus.put(player, display);
+        }
         final Game game = new Game(players);
         game.registerListener(this);
         game.start();
 	}
     
 	@Override
-	public void handleEvent(final GameEvent event) {
+	public void handleEvent(final GameEvent event, final EventHandler eventHandler) {
 		final Collection<Card> cards = new LinkedList<Card>(humanPlayer.getHand().getCards());
         handler.post(new Runnable() {
 			@Override
@@ -80,16 +87,39 @@ public class GameActivity extends Activity implements GameEventListener {
                 updateScores(event.context.players);
                 updateHand(cards);
                 updateLevelInfo(event.level);
+                eventHandler.done();
 			}
 		});
 	}
     
 	private void updateLevelInfo(CloudLevel level) {
 		if (level != null) {
-			((TextView) findViewById(R.id.level)).setText(level.toString());
+			LinearLayout layout = (LinearLayout) findViewById(R.id.level);
+			layout.removeAllViews();
+			for (CloudLevel cloudLevel : CloudLevel.gameLevels()) {
+				Button levelImage = new Button(this);
+				levelImage.setWidth(50);
+				levelImage.setPadding(5, 5, 5, 5);
+				levelImage.setClickable(false);
+				levelImage.setText(((Integer) cloudLevel.getScore()).toString());
+				if (cloudLevel.equals(level)) {
+					levelImage.setBackgroundResource(R.drawable.levelselected);
+				} else {
+					levelImage.setBackgroundResource(R.drawable.level);
+				}
+				layout.addView(levelImage);
+			}
 		}
 	}
 
+	private void sleep(int milliseconds) {
+		try {
+			Thread.sleep(milliseconds);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	private void handleEventAux(final GameEvent event){
 		switch (event.type) {
 		case DICE_ROLLED:
@@ -109,6 +139,9 @@ public class GameActivity extends Activity implements GameEventListener {
 		case LEVEL_BEGIN:
 			log.append("\nStarting " + event.level + " with " +
 					event.context.remainingPlayers + "\n");
+			for (Player player : event.context.players) {
+				playerStatus.get(player).unsetStatus();
+			}
 			break;
 		case LEVEL_END:
 			break;
@@ -119,6 +152,7 @@ public class GameActivity extends Activity implements GameEventListener {
 			} else {
 				log.append("leaving :(\n");
 			}
+			playerStatus.get(event.currentPlayer).setMove(event.move);
 			break;
 		case PAY:
 			log.append(event.context.pilot + " ");
@@ -137,6 +171,7 @@ public class GameActivity extends Activity implements GameEventListener {
 			log.append("Round is over!\n");
 			break;
 		}
+		
 		final ScrollView logParent = (ScrollView) findViewById(R.id.log_scrollview);
 		logParent.post(new Runnable() {
 			@Override
@@ -144,12 +179,12 @@ public class GameActivity extends Activity implements GameEventListener {
 				logParent.fullScroll(View.FOCUS_DOWN);
 			}
 		});
+		sleep(300);
 	}
 
 	private void updateScores(final List<Player> players) {
-		scoreboard.setText("");
-		for (final Player player : players) {
-			scoreboard.append(player + ": " + player.getScore() + "\n");
+		for (Player player : players) {
+			playerStatus.get(player).updateScore();
 		}
 	}
     

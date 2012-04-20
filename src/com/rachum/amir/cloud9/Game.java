@@ -4,12 +4,9 @@
 package com.rachum.amir.cloud9;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
 import com.rachum.amir.cloud9.GameEvent.Type;
 
 /**
@@ -46,8 +43,16 @@ public class Game extends Thread {
     }
     
 	private void announce(final GameEvent event) {
+		Collection<EventHandler> handlers = new LinkedList<EventHandler>();
 		for (final GameEventListener listener : listeners) {
-			listener.handleEvent(event);
+			EventHandler handler = new EventHandler();
+			handlers.add(handler);
+			listener.handleEvent(event, handler);
+		}
+		//TODO: to optimize runtime, this could be done BEFORE the announce on
+		//the previous handlers.
+		for (final EventHandler handler : handlers) {
+			handler.waitUntilDone();
 		}
 	}
 
@@ -130,6 +135,10 @@ public class Game extends Thread {
 		
 		final PayHandler handler = new PayHandler();
 		pilot.pay(handler, this);
+		GameEvent event = new GameEvent(Type.PAY, this);
+		event.didPay = handler.didPay();
+		event.cardsPayed = handler.getCards();
+		announce(event);
 		if (handler.didPay()) {
             return LevelOutcome.SUCCESS;
 		}

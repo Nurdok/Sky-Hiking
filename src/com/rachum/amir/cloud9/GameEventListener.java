@@ -1,7 +1,7 @@
 package com.rachum.amir.cloud9;
 
 public interface GameEventListener {
-	public void handleEvent(GameEvent event);
+	public void handleEvent(GameEvent event, EventHandler eventHandler);
     /*public void roundBegin();
     public void roundEnd();
     public void gameBegin(List<Player> players);

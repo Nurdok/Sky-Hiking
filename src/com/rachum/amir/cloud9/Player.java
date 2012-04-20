@@ -22,11 +22,12 @@ public abstract class Player implements GameEventListener {
 	}
     
     @Override
-    public void handleEvent(final GameEvent event) {
+    public void handleEvent(final GameEvent event, EventHandler eventHandler) {
     	switch (event.type) {
     	case ROUND_END:
     		hand.draw(1);
     	}
+    	eventHandler.done();
     };
     
     
