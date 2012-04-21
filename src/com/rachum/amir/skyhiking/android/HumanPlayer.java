@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.rachum.amir.cloud9.android;
+package com.rachum.amir.skyhiking.android;
 
 import java.util.Arrays;
 
@@ -9,12 +9,12 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 
-import com.rachum.amir.cloud9.Card;
-import com.rachum.amir.cloud9.Game;
-import com.rachum.amir.cloud9.Move;
-import com.rachum.amir.cloud9.MoveHandler;
-import com.rachum.amir.cloud9.PayHandler;
-import com.rachum.amir.cloud9.Player;
+import com.rachum.amir.skyhiking.Card;
+import com.rachum.amir.skyhiking.Game;
+import com.rachum.amir.skyhiking.Move;
+import com.rachum.amir.skyhiking.MoveHandler;
+import com.rachum.amir.skyhiking.PayHandler;
+import com.rachum.amir.skyhiking.Player;
 
 /**
  * @author Rachum

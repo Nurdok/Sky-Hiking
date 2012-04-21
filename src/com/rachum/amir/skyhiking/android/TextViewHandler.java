@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.rachum.amir.cloud9.android;
+package com.rachum.amir.skyhiking.android;
 
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;

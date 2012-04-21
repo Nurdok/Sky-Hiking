@@ -1,4 +1,4 @@
-package com.rachum.amir.cloud9.android;
+package com.rachum.amir.skyhiking.android;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,15 +18,16 @@ import android.widget.ScrollView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
 
-import com.rachum.amir.cloud9.Card;
-import com.rachum.amir.cloud9.CloudLevel;
-import com.rachum.amir.cloud9.EventHandler;
-import com.rachum.amir.cloud9.Game;
-import com.rachum.amir.cloud9.GameEvent;
-import com.rachum.amir.cloud9.GameEventListener;
-import com.rachum.amir.cloud9.Move;
-import com.rachum.amir.cloud9.Player;
-import com.rachum.amir.cloud9.RiskyPlayer;
+import com.rachum.amir.skyhiking.Card;
+import com.rachum.amir.skyhiking.CloudLevel;
+import com.rachum.amir.skyhiking.EventHandler;
+import com.rachum.amir.skyhiking.Game;
+import com.rachum.amir.skyhiking.GameEvent;
+import com.rachum.amir.skyhiking.GameEventListener;
+import com.rachum.amir.skyhiking.Move;
+import com.rachum.amir.skyhiking.Player;
+import com.rachum.amir.skyhiking.RiskyPlayer;
+import com.rachum.amir.skyhiking.android.R;
 import com.rachum.amir.util.range.Range;
 
 public class GameActivity extends Activity implements GameEventListener {
@@ -62,7 +63,7 @@ public class GameActivity extends Activity implements GameEventListener {
         
         Collections.shuffle(names);
         final List<Player> players = new LinkedList<Player>();
-        for (final int i : new Range(3)) {
+        for (final int i : new Range(5)) {
         	players.add(new RiskyPlayer(names.get(i)));
         }
         humanPlayer = new HumanPlayer("Amir", handler, stay, leave, pay, payWithWild, dontPay);

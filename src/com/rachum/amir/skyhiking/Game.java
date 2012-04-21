@@ -1,13 +1,14 @@
 /**
  * 
  */
-package com.rachum.amir.cloud9;
+package com.rachum.amir.skyhiking;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import com.rachum.amir.cloud9.GameEvent.Type;
+
+import com.rachum.amir.skyhiking.GameEvent.Type;
 
 /**
  * @author Amir Rachum

@@ -1,4 +1,4 @@
-package com.rachum.amir.cloud9;
+package com.rachum.amir.skyhiking;
 
 public class EventHandler {
 	private boolean handlingDone = false;

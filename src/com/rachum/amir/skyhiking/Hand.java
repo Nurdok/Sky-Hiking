@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.rachum.amir.cloud9;
+package com.rachum.amir.skyhiking;
 
 import java.util.Collection;
 import java.util.LinkedList;

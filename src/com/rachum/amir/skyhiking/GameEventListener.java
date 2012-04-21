@@ -1,4 +1,4 @@
-package com.rachum.amir.cloud9;
+package com.rachum.amir.skyhiking;
 
 public interface GameEventListener {
 	public void handleEvent(GameEvent event, EventHandler eventHandler);

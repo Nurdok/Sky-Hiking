@@ -23,18 +23,24 @@
     <TableLayout
         android:orientation="horizontal"
         android:id="@+id/handinfo"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:stretchColumns="*"
+        android:shrinkColumns="*"
+        android:clipToPadding="true"
+        android:clipChildren="true"
+        android:gravity="center"
         android:layout_alignParentBottom="true" >
         
-        <TableRow>
+        <TableRow
+            android:paddingBottom="10px"
+            android:paddingLeft="5px"
+            android:paddingRight="5px"
+	        android:gravity="center"
+            >
         
 		    <Button
 		        android:id="@+id/redcount"
 		        style="@style/CardCount"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
 		        android:textColor="#FF0000"
 		        android:gravity="center"
 		        android:background="@drawable/cards"
@@ -43,8 +49,6 @@
 		    <Button
 		        android:id="@+id/greencount"
 		        style="@style/CardCount"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
 		        android:textColor="#009405"
 		        android:gravity="center"
 		        android:background="@drawable/cards"
@@ -53,8 +57,6 @@
 		    <Button
 		        android:id="@+id/yellowcount"
 		        style="@style/CardCount"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
 		        android:textColor="#DDFF00"
 		        android:gravity="center"
 		        android:background="@drawable/cards"
@@ -63,8 +65,6 @@
 		    <Button
 		        android:id="@+id/purplecount"
 		        style="@style/CardCount"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
 		        android:textColor="#8500C7"
 		        android:gravity="center"
 		        android:background="@drawable/cards"
@@ -73,8 +73,6 @@
 		    <Button
 		        android:id="@+id/wildcount"
 		        style="@style/CardCount"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
 		        android:textColor="#FFFFFF"
 		        android:gravity="center"
 		        android:background="@drawable/cards"

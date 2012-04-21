@@ -1,4 +1,6 @@
-package com.rachum.amir.cloud9.android;
+package com.rachum.amir.skyhiking.android;
+
+import com.rachum.amir.skyhiking.android.R;
 
 import android.app.Activity;
 import android.content.Intent;

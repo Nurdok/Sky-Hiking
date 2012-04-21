@@ -1,7 +1,8 @@
-package com.rachum.amir.cloud9.android;
+package com.rachum.amir.skyhiking.android;
 
-import com.rachum.amir.cloud9.Move;
-import com.rachum.amir.cloud9.Player;
+import com.rachum.amir.skyhiking.Move;
+import com.rachum.amir.skyhiking.Player;
+import com.rachum.amir.skyhiking.android.R;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -54,8 +55,8 @@ public class PlayerStatusDisplay extends LinearLayout {
 	public void setPilot() {
 		statusImage.setVisibility(VISIBLE);
 		statusImage.setImageResource(R.drawable.pilot); //TODO: change to pilot image
-		statusImage.getLayoutParams().height = 40;
-		statusImage.getLayoutParams().width = 40;
+		statusImage.getLayoutParams().height = 70;
+		statusImage.getLayoutParams().width = 70;
 	}
 	
 	public void unsetStatus() {
