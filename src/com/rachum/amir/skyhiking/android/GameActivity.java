@@ -35,6 +35,7 @@ public class GameActivity extends Activity implements GameEventListener {
     private TextView log;
     private Handler handler;
     private Player humanPlayer;
+    private CloudLevel lastKnownLevel = null;
     private Map<Player, PlayerStatusDisplay> playerStatus = 
     	new HashMap<Player, PlayerStatusDisplay>();
     private List<String> names = 
@@ -94,22 +95,25 @@ public class GameActivity extends Activity implements GameEventListener {
 	}
     
 	private void updateLevelInfo(CloudLevel level) {
-		if (level != null) {
-			LinearLayout layout = (LinearLayout) findViewById(R.id.level);
-			layout.removeAllViews();
-			for (CloudLevel cloudLevel : CloudLevel.gameLevels()) {
-				Button levelImage = new Button(this);
-				levelImage.setWidth(50);
-				levelImage.setPadding(5, 5, 5, 5);
-				levelImage.setClickable(false);
-				levelImage.setText(((Integer) cloudLevel.getScore()).toString());
-				if (cloudLevel.equals(level)) {
-					levelImage.setBackgroundResource(R.drawable.levelselected);
-				} else {
-					levelImage.setBackgroundResource(R.drawable.level);
-				}
-				layout.addView(levelImage);
+		if (level == null) {
+			level = lastKnownLevel;
+		} else {
+			lastKnownLevel = level;
+		}
+		LinearLayout layout = (LinearLayout) findViewById(R.id.level);
+		layout.removeAllViews();
+		for (CloudLevel cloudLevel : CloudLevel.gameLevels()) {
+			Button levelImage = new Button(this);
+			levelImage.setWidth(50);
+			levelImage.setPadding(5, 5, 5, 5);
+			levelImage.setClickable(false);
+			levelImage.setText(((Integer) cloudLevel.getScore()).toString());
+			if (cloudLevel.equals(level)) {
+				levelImage.setBackgroundResource(R.drawable.levelselected);
+			} else {
+				levelImage.setBackgroundResource(R.drawable.level);
 			}
+			layout.addView(levelImage);
 		}
 	}
 
@@ -124,22 +128,16 @@ public class GameActivity extends Activity implements GameEventListener {
 	private void handleEventAux(final GameEvent event){
 		switch (event.type) {
 		case DICE_ROLLED:
-			log.append(event.context.pilot + " rolled " + event.context.diceRoll + "\n");
+			log.setText(event.context.pilot + " rolled " + event.context.diceRoll);
 			break;
 		case GAME_BEGIN:
-			log.append("Starting a new game!\n");
-			log.append("Players are: ");
-			for (final Player player : event.context.players) {
-				log.append(player + " ");
-			}
-			log.append("\n");
+			log.setText("Starting a new game!\n");
 			break;
 		case GAME_END:
-			log.append("Game is over! the winner is " + event.winner);
+			log.setText("Game over! The winner is " + event.winner);
 			break;
 		case LEVEL_BEGIN:
-			log.append("\nStarting " + event.level + " with " +
-					event.context.remainingPlayers + "\n");
+			log.setText("Starting " + event.level);
 			for (Player player : event.context.players) {
 				playerStatus.get(player).unsetStatus();
 				playerStatus.get(player).setPlaying(event.context.remainingPlayers.contains(player));
@@ -149,39 +147,27 @@ public class GameActivity extends Activity implements GameEventListener {
 		case LEVEL_END:
 			break;
 		case MOVE:
-			log.append(event.currentPlayer + " is ");
-			if (event.move == Move.STAY) {
-				log.append("staying!\n");
-			} else {
-				log.append("leaving :(\n");
-			}
 			playerStatus.get(event.currentPlayer).setMove(event.move);
 			break;
 		case PAY:
-			log.append(event.context.pilot + " ");
 			if (event.didPay) {
-				log.append("payed " + event.cardsPayed + " and we are moving on to " +
-				"the next level.\n");
+				log.setText(event.context.pilot + " payed");
+				if (event.cardsPayed.contains(Card.WILD)) {
+					log.append(" with a wildcard");
+				}
+				log.append(".");
 			}
 			else {
-				log.append("didn't have the cards. We're crashing...\n");
+				log.setText("Awww... we crashed!");
 			}
 			break;
 		case ROUND_BEGIN:
-			log.append("\nNew Round Begins!\n");
+			log.setText("Starting a new round!");
 			break;
 		case ROUND_END:
-			log.append("Round is over!\n");
 			break;
 		}
 		
-		final ScrollView logParent = (ScrollView) findViewById(R.id.log_scrollview);
-		logParent.post(new Runnable() {
-			@Override
-			public void run() {
-				logParent.fullScroll(View.FOCUS_DOWN);
-			}
-		});
 		sleep(300);
 	}
 

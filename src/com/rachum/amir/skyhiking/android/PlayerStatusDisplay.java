@@ -55,8 +55,8 @@ public class PlayerStatusDisplay extends LinearLayout {
 	public void setPilot() {
 		statusImage.setVisibility(VISIBLE);
 		statusImage.setImageResource(R.drawable.pilot); //TODO: change to pilot image
-		statusImage.getLayoutParams().height = 70;
-		statusImage.getLayoutParams().width = 70;
+		statusImage.getLayoutParams().height = 40;
+		statusImage.getLayoutParams().width = 40;
 	}
 	
 	public void unsetStatus() {

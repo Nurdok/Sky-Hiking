@@ -27,11 +27,10 @@ public final class R {
         public static final int handinfo=0x7f060002;
         public static final int leave=0x7f06000a;
         public static final int level=0x7f060000;
-        public static final int log=0x7f06000f;
-        public static final int log_scrollview=0x7f06000e;
+        public static final int log=0x7f06000e;
         public static final int pay=0x7f06000b;
         public static final int payWithWild=0x7f06000c;
-        public static final int playButton=0x7f060010;
+        public static final int playButton=0x7f06000f;
         public static final int purplecount=0x7f060006;
         public static final int redcount=0x7f060003;
         public static final int scoreboard=0x7f060001;
