@@ -2,6 +2,8 @@ package com.rachum.amir.skyhiking;
 
 import java.util.Collection;
 
+import com.rachum.amir.skyhiking.players.Player;
+
 
 public class GameEvent {
     

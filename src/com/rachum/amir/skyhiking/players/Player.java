@@ -1,4 +1,13 @@
-package com.rachum.amir.skyhiking;
+package com.rachum.amir.skyhiking.players;
+
+import com.rachum.amir.skyhiking.Deck;
+import com.rachum.amir.skyhiking.EventHandler;
+import com.rachum.amir.skyhiking.Game;
+import com.rachum.amir.skyhiking.GameEvent;
+import com.rachum.amir.skyhiking.GameEventListener;
+import com.rachum.amir.skyhiking.Hand;
+import com.rachum.amir.skyhiking.MoveHandler;
+import com.rachum.amir.skyhiking.PayHandler;
 
 
 

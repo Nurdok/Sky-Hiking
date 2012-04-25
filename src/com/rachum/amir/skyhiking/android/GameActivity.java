@@ -25,9 +25,10 @@ import com.rachum.amir.skyhiking.Game;
 import com.rachum.amir.skyhiking.GameEvent;
 import com.rachum.amir.skyhiking.GameEventListener;
 import com.rachum.amir.skyhiking.Move;
-import com.rachum.amir.skyhiking.Player;
-import com.rachum.amir.skyhiking.RiskyPlayer;
 import com.rachum.amir.skyhiking.android.R;
+import com.rachum.amir.skyhiking.players.Player;
+import com.rachum.amir.skyhiking.players.RandomPlayer;
+import com.rachum.amir.skyhiking.players.RiskyPlayer;
 import com.rachum.amir.util.range.Range;
 
 public class GameActivity extends Activity implements GameEventListener {
@@ -65,10 +66,11 @@ public class GameActivity extends Activity implements GameEventListener {
         Collections.shuffle(names);
         final List<Player> players = new LinkedList<Player>();
         for (final int i : new Range(5)) {
-        	players.add(new RiskyPlayer(names.get(i)));
+        	players.add(new RandomPlayer(names.get(i)));
         }
         humanPlayer = new HumanPlayer("Amir", handler, stay, leave, pay, payWithWild, dontPay);
         players.add(humanPlayer);
+        Collections.shuffle(players);
         for (Player player : players) {
         	PlayerStatusDisplay display = new PlayerStatusDisplay(this, player);
         	scoreboard.addView(display);

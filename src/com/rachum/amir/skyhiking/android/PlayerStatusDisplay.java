@@ -1,8 +1,8 @@
 package com.rachum.amir.skyhiking.android;
 
 import com.rachum.amir.skyhiking.Move;
-import com.rachum.amir.skyhiking.Player;
 import com.rachum.amir.skyhiking.android.R;
+import com.rachum.amir.skyhiking.players.Player;
 
 import android.content.Context;
 import android.graphics.Color;
