@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Sky Hiking</string>
-
+    <string name="change_name_title">What\'s Your Name?</string>
 </resources>

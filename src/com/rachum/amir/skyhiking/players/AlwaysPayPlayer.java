@@ -20,7 +20,7 @@ public abstract class AlwaysPayPlayer extends Player {
 	        handler.pay(true, context.diceRoll);
 	    } else if (hand.contains(Card.WILD)) {
 	        hand.discard(Card.WILD);
-	        handler.pay(true, Arrays.asList(Card.WILD)); //FIXME: change to wild
+	        handler.pay(true, Arrays.asList(Card.WILD));
 	    } else {
 	    	handler.pay(false, null);
 	    }
