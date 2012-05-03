@@ -27,6 +27,7 @@ public class MenuActivity extends Activity {
     
     public void beginGame(final View view) {
     	final Intent intent = new Intent(this, GameActivity.class);
+    	intent.putExtra("playerName", playerName);
         startActivity(intent);
    }
     

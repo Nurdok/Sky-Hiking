@@ -68,7 +68,9 @@ public class GameActivity extends Activity implements GameEventListener {
         for (final int i : new Range(5)) {
         	players.add(new RandomPlayer(names.get(i)));
         }
-        humanPlayer = new HumanPlayer("Amir", handler, stay, leave, pay, payWithWild, dontPay);
+        Bundle bundle = getIntent().getExtras();
+        String playerName = bundle.getString("playerName");
+        humanPlayer = new HumanPlayer(playerName, handler, stay, leave, pay, payWithWild, dontPay);
         players.add(humanPlayer);
         Collections.shuffle(players);
         for (Player player : players) {

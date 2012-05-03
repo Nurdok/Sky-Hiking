@@ -26,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:shrinkColumns="*"
+        android:stretchColumns="*"
         android:clipToPadding="true"
         android:clipChildren="true"
         android:gravity="center"
@@ -36,9 +37,16 @@
             android:paddingLeft="5px"
             android:paddingRight="5px"
 	        android:gravity="center"
+	        android:weightSum="5"
             >
-        
+           	
+            <LinearLayout
+                android:gravity="center"
+                >
+                
 		    <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 		        android:id="@+id/redcount"
 		        style="@style/CardCount"
 		        android:textColor="#FF0000"
@@ -46,7 +54,15 @@
 		        android:background="@drawable/cards"
 		        android:text="0" />
 		    
+		    </LinearLayout>
+		    
+            <LinearLayout
+                android:gravity="center"
+                >
+		    
 		    <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 		        android:id="@+id/greencount"
 		        style="@style/CardCount"
 		        android:textColor="#009405"
@@ -54,7 +70,14 @@
 		        android:background="@drawable/cards"
 		        android:text="0" />
 		    
+		    </LinearLayout>
+		    
+            <LinearLayout
+                android:gravity="center"
+                >
 		    <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 		        android:id="@+id/yellowcount"
 		        style="@style/CardCount"
 		        android:textColor="#DDFF00"
@@ -62,7 +85,14 @@
 		        android:background="@drawable/cards"
 		        android:text="0" />
 		    
+		    </LinearLayout>
+		    
+            <LinearLayout
+                android:gravity="center"
+                >
 		    <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 		        android:id="@+id/purplecount"
 		        style="@style/CardCount"
 		        android:textColor="#8500C7"
@@ -70,14 +100,22 @@
 		        android:background="@drawable/cards"
 		        android:text="0" />
 		    
+		    </LinearLayout>
+		    
+            <LinearLayout
+                android:gravity="center"
+                >
 		    <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 		        android:id="@+id/wildcount"
 		        style="@style/CardCount"
 		        android:textColor="#FFFFFF"
 		        android:gravity="center"
 		        android:background="@drawable/cards"
 		        android:text="0" />
-		    
+		    </LinearLayout>
+		   
 	    </TableRow>
 	    
 	</TableLayout>
