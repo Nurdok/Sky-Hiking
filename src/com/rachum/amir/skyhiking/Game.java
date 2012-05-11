@@ -4,9 +4,13 @@
 package com.rachum.amir.skyhiking;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.rachum.amir.skyhiking.GameEvent.Type;
 import com.rachum.amir.skyhiking.players.Player;
@@ -94,14 +98,20 @@ public class Game extends Thread {
 				}
 				
 			}
-            for (final Player player : players) {
-            	if (player.getScore() >= 50) {
-                    final GameEvent event = new GameEvent(Type.GAME_END, this);
-                    event.winner = player;
-                    announce(event);
-                    return;
-            	}
-            }
+			Player leadingPlayer = Collections.max(players, 
+					new Comparator<Player>() {
+				@Override
+				public int compare(Player lhs, Player rhs) {
+					// TODO Auto-generated method stub
+					return lhs.getScore() - rhs.getScore();
+				}
+			});
+			if (leadingPlayer.getScore() >= 50) {
+                final GameEvent event = new GameEvent(Type.GAME_END, this);
+                event.winner = leadingPlayer;
+                announce(event);
+                return;
+			}
 		}
 	}
 
