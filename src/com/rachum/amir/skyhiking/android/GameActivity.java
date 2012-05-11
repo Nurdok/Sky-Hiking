@@ -154,6 +154,7 @@ public class GameActivity extends Activity implements GameEventListener {
 			break;
 		case GAME_END:
 			log.setText("Game over! The winner is " + event.winner);
+			playerStatus.get(event.winner).setWon();
 			break;
 		case LEVEL_BEGIN:
 			log.setText("Starting " + event.level);

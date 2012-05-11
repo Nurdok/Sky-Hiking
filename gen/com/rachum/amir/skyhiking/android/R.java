@@ -55,6 +55,7 @@ public final class R {
         public static final int change_name_title=0x7f040001;
     }
     public static final class style {
+        public static final int BoldText=0x7f050001;
         public static final int CardCount=0x7f050000;
     }
 }

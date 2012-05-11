@@ -8,6 +8,8 @@
         <item name="android:textSize">25sp</item>
         <item name="android:scaleType">fitXY</item>
     </style>
-
     
+    <style name="BoldText">
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

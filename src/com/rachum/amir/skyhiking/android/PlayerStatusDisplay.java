@@ -14,9 +14,11 @@ public class PlayerStatusDisplay extends LinearLayout {
 	private final TextView playerName;
 	private final ImageView statusImage;
 	private final Player player;
+	Context context;
 	
 	public PlayerStatusDisplay(Context context, Player player) {
 		super(context);
+		this.context = context;
 		this.player = player;
 		playerName = new TextView(context);
 		this.setPadding(10, 20, 10, 0);
@@ -50,6 +52,12 @@ public class PlayerStatusDisplay extends LinearLayout {
 		} else {
 			playerName.setTextColor(Color.GRAY);
 		}
+	}
+	
+	public void setWon() {
+		playerName.setTextAppearance(getContext(), R.style.BoldText);
+		playerName.setShadowLayer(2, 0, 0, Color.BLACK);
+		playerName.setTextColor(Color.GREEN);
 	}
 	
 	public void setPilot() {
