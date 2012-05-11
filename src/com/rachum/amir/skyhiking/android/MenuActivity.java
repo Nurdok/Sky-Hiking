@@ -8,6 +8,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +30,12 @@ public class MenuActivity extends Activity {
     	settings = getSharedPreferences("SkyHiking", 0);
     	playerName = settings.getString(PLAYER_NAME_PREF, "Player");
         showPlayerName();
+    }
+    
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
     
     public void beginGame(final View view) {
