@@ -4,6 +4,7 @@
 package com.rachum.amir.skyhiking;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 
 /**
@@ -24,7 +25,8 @@ public class Hand {
     
 	public void discard(final Card card) {
 		if (!cards.contains(card)) {
-			//TODO: throw
+			throw new IllegalStateException(card.toString() + 
+											" is not in hand.");
 		}
         cards.remove(card);
         deck.discard(card);
@@ -45,7 +47,14 @@ public class Hand {
     }
     
 	public boolean contains(final Collection<Card> cards) {
-		return this.cards.containsAll(cards);
+		for (Card card : cards) {
+			int inHand = Collections.frequency(this.cards, card);
+			int inList = Collections.frequency(cards, card);
+			if (inList > inHand) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }
