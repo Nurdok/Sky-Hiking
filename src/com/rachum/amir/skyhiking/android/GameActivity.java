@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -21,7 +22,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SlidingDrawer;
+import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import com.rachum.amir.skyhiking.Card;
 import com.rachum.amir.skyhiking.CloudLevel;
@@ -155,6 +158,9 @@ public class GameActivity extends Activity implements GameEventListener {
 		case GAME_END:
 			log.setText("Game over! The winner is " + event.winner);
 			playerStatus.get(event.winner).setWon();
+			//LinearLayout buttons = (LinearLayout) findViewById(R.id.buttons);
+			ViewFlipper flipper = (ViewFlipper) findViewById(R.id.buttonsFlipper);
+			flipper.showNext();
 			break;
 		case LEVEL_BEGIN:
 			log.setText("Starting " + event.level);
@@ -228,5 +234,11 @@ public class GameActivity extends Activity implements GameEventListener {
 			((TextView) findViewById(counterMap.get(cardType)))
 				.setText(cardCount.toString());
 		}
+	}
+	
+	public void playAgain(final View view) {
+		finish();
+		Intent intent = getIntent();
+		startActivity(intent);
 	}
 }

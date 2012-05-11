@@ -120,54 +120,69 @@
 	    
 	</TableLayout>
     
-    <LinearLayout
-        android:id="@+id/buttons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:gravity="center"
-        android:layout_above="@+id/handinfo" >
-
-        <Button
-            android:id="@+id/stay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="Stay" />
-
-        <Button
-            android:id="@+id/leave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="Leave" />
-
-        <Button
-            android:id="@+id/pay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="Pay" />
-
-        <Button
-            android:id="@+id/payWithWild"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="Pay Wild" />
-
-        <Button
-            android:id="@+id/dontPay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="Don&apos;t Pay" />
-    </LinearLayout>
+    <ViewFlipper 
+        android:id="@+id/buttonsFlipper"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" 
+	        android:layout_above="@+id/handinfo" >
+        
+	    <LinearLayout
+	        android:id="@+id/buttons"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent" 
+	        android:gravity="center" >
+	
+	        <Button
+	            android:id="@+id/stay"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:enabled="false"
+	            android:text="Stay" />
+	
+	        <Button
+	            android:id="@+id/leave"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:enabled="false"
+	            android:text="Leave" />
+	
+	        <Button
+	            android:id="@+id/pay"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:enabled="false"
+	            android:text="Pay" />
+	
+	        <Button
+	            android:id="@+id/payWithWild"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:enabled="false"
+	            android:text="Pay Wild" />
+	
+	        <Button
+	            android:id="@+id/dontPay"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:enabled="false"
+	            android:text="Don&apos;t Pay" />
+	    </LinearLayout>
+	    
+	   	<Button
+	   	    android:id="@+id/playAgain"
+	   	    android:layout_gravity="center"
+	   	 	android:layout_width="fill_parent"
+	   	 	android:layout_height="fill_parent" 
+	   	 	android:text="Play Again!"
+	   	 	android:onClick="playAgain"
+	   	    />
+    </ViewFlipper>
 
     <TextView
         android:id="@+id/log"
         style="@style/CardCount"
         android:shadowColor="#FFFFFF"
-        android:layout_above="@+id/buttons"
+        android:layout_above="@+id/buttonsFlipper"
         android:layout_below="@+id/scoreboard"
         android:gravity="center"
         android:layout_width="wrap_content"
