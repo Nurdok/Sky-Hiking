@@ -28,7 +28,7 @@ public class Game extends Thread {
 	final Iterator<Player> pilotIterator;
     public Player pilot;
     
-	private enum LevelOutcome {SUCCESS, CRASH;}
+	private enum LevelOutcome {SUCCESS, CRASH, BAIL;}
 	
 	public Game(final List<Player> players) {
 		super();
@@ -86,7 +86,7 @@ public class Game extends Thread {
                 
                 
                 final LevelOutcome outcome = playLevel(level);
-                if (outcome == LevelOutcome.CRASH) {
+                if (outcome != LevelOutcome.SUCCESS) {
                     announce(new GameEvent(Type.LEVEL_END, this));
                     announce(new GameEvent(Type.ROUND_END, this));
                 	break;
@@ -124,27 +124,39 @@ public class Game extends Thread {
 	}
 
 	public LevelOutcome playLevel(final CloudLevel level) {
-		diceRoll = Dice.roll(level.getDiceNumber());
-        announce(new GameEvent(Type.DICE_ROLLED, this));
-        
-		final List<Player> newRemainingPlayers = new LinkedList<Player>();
-		newRemainingPlayers.addAll(remainingPlayers);
-		for (final Player player : getRemainingPlayersInOrder()) {
-			if (player != pilot) {
-                final MoveHandler handler = new MoveHandler();
-                player.play(handler, this);
-				final Move move = handler.getMove();
-				if (move == Move.LEAVE) {
-					player.score(level.getScore());
-					newRemainingPlayers.remove(player);
-				}
-				final GameEvent event = new GameEvent(Type.MOVE, this);
-				event.move = move;
-                event.currentPlayer = player;
-				announce(event);
+		if (remainingPlayers.size() == 1) {
+            final MoveHandler handler = new MoveHandler();
+            pilot.play(handler, this);
+			final Move move = handler.getMove();
+			if (move == Move.LEAVE) {
+				pilot.score(level.getScore());
+				return LevelOutcome.BAIL;
 			}
+			diceRoll = Dice.roll(level.getDiceNumber());
+			announce(new GameEvent(Type.DICE_ROLLED, this));
+		} else {
+			diceRoll = Dice.roll(level.getDiceNumber());
+	        announce(new GameEvent(Type.DICE_ROLLED, this));
+	        
+			final List<Player> newRemainingPlayers = new LinkedList<Player>();
+			newRemainingPlayers.addAll(remainingPlayers);
+			for (final Player player : getRemainingPlayersInOrder()) {
+				if (player != pilot) {
+	                final MoveHandler handler = new MoveHandler();
+	                player.play(handler, this);
+					final Move move = handler.getMove();
+					if (move == Move.LEAVE) {
+						player.score(level.getScore());
+						newRemainingPlayers.remove(player);
+					}
+					final GameEvent event = new GameEvent(Type.MOVE, this);
+					event.move = move;
+	                event.currentPlayer = player;
+					announce(event);
+				}
+			}
+			remainingPlayers.retainAll(newRemainingPlayers);
 		}
-		remainingPlayers.retainAll(newRemainingPlayers);
 		
 		final PayHandler handler = new PayHandler();
 		pilot.pay(handler, this);
