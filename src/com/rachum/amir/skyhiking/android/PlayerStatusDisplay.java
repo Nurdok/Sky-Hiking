@@ -64,6 +64,9 @@ public class PlayerStatusDisplay extends LinearLayout {
 	}
 	
 	public void updateScore() {
-		playerName.setText(player.getName() + " (" + player.getScore() + ")");
+		int cardCount = player.getHand().getCards().size();
+		int score = player.getScore();
+		playerName.setText(player.getName() + " (" + cardCount + "C / " + 
+						   score + "P)");
 	}
 }
