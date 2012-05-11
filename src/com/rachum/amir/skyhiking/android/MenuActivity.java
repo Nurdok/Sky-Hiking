@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +15,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class MenuActivity extends Activity {
+	private static final String PLAYER_NAME_PREF = "player_name";
+    private SharedPreferences settings = null;
 	private long lastTapTime = -1;
-	private String playerName = "Player";
+	private String playerName = null;
 	private final int CHANGE_NAME_DIALOG = 1;
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(final Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+    	settings = getSharedPreferences("SkyHiking", 0);
+    	playerName = settings.getString(PLAYER_NAME_PREF, "Player");
         showPlayerName();
     }
     
@@ -55,6 +60,9 @@ public class MenuActivity extends Activity {
     			public void onClick(DialogInterface dialog, int whichButton) {
 					final EditText name = (EditText) textEntryView.findViewById(R.id.name_input);
     				playerName = name.getText().toString();
+    				SharedPreferences.Editor editor = settings.edit();
+    				editor.putString(PLAYER_NAME_PREF, playerName);
+    				editor.commit();
     				MenuActivity.this.showPlayerName();
     			}
     		})
