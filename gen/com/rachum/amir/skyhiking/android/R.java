@@ -40,6 +40,7 @@ public final class R {
         public static final int scoreboard=0x7f060002;
         public static final int stay=0x7f06000a;
         public static final int textView1=0x7f060012;
+        public static final int textView2=0x7f060014;
         public static final int wildcount=0x7f060008;
         public static final int yellowcount=0x7f060006;
     }
@@ -50,6 +51,7 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f040000;
+        public static final int beta_notice=0x7f040002;
         public static final int change_name_title=0x7f040001;
     }
     public static final class style {

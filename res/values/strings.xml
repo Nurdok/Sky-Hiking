@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Sky Hiking</string>
     <string name="change_name_title">What\'s Your Name?</string>
+    <string name="beta_notice">Sky Hiking is still in Beta.\nFound a bug? Please report it at\nhttps://github.com/Nurdok/Sky-Hiking</string>
 </resources>

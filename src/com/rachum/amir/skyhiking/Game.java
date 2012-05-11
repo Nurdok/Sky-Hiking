@@ -34,7 +34,7 @@ public class Game extends Thread {
         }
 		deck = new Deck();
 		for (final Player player : players) {
-            player.gameStart(deck);
+            player.gameStart(deck); //TODO: move this functionality to event
 		}
     	pilotIterator = new InfiniteIterator(players);
         remainingPlayers = new LinkedList<Player>(players);

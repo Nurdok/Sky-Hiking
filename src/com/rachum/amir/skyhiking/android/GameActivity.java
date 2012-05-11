@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
@@ -70,22 +73,25 @@ public class GameActivity extends Activity implements GameEventListener {
         }
         Bundle bundle = getIntent().getExtras();
         String playerName = bundle.getString("playerName");
-        humanPlayer = new HumanPlayer(playerName, handler, stay, leave, pay, payWithWild, dontPay);
+        humanPlayer = new HumanPlayer(playerName, handler, stay, leave, pay, 
+        							  payWithWild, dontPay);
         players.add(humanPlayer);
         Collections.shuffle(players);
+        final Game game = new Game(players);
         for (Player player : players) {
         	PlayerStatusDisplay display = new PlayerStatusDisplay(this, player);
         	scoreboard.addView(display);
         	playerStatus.put(player, display);
         }
-        final Game game = new Game(players);
         game.registerListener(this);
         game.start();
 	}
     
 	@Override
-	public void handleEvent(final GameEvent event, final EventHandler eventHandler) {
-		final Collection<Card> cards = new LinkedList<Card>(humanPlayer.getHand().getCards());
+	public void handleEvent(final GameEvent event, 
+						    final EventHandler eventHandler) {
+		final Collection<Card> cards = new LinkedList<Card>(
+				humanPlayer.getHand().getCards());
         handler.post(new Runnable() {
 			@Override
 			public void run() {
@@ -132,7 +138,8 @@ public class GameActivity extends Activity implements GameEventListener {
 	private void handleEventAux(final GameEvent event){
 		switch (event.type) {
 		case DICE_ROLLED:
-			log.setText(event.context.pilot + " rolled " + event.context.diceRoll);
+			String diceRollPrint = formatDiceRoll(event.context.diceRoll);
+			log.setText(event.context.pilot + " rolled " + diceRollPrint + ".");
 			break;
 		case GAME_BEGIN:
 			log.setText("Starting a new game!\n");
@@ -144,7 +151,8 @@ public class GameActivity extends Activity implements GameEventListener {
 			log.setText("Starting " + event.level);
 			for (Player player : event.context.players) {
 				playerStatus.get(player).unsetStatus();
-				playerStatus.get(player).setPlaying(event.context.remainingPlayers.contains(player));
+				playerStatus.get(player).setPlaying(
+						event.context.remainingPlayers.contains(player));
 			}
 			playerStatus.get(event.context.pilot).setPilot();
 			break;
@@ -175,6 +183,21 @@ public class GameActivity extends Activity implements GameEventListener {
 		sleep(300);
 	}
 
+	private String formatDiceRoll(Collection<Card> diceRoll) {
+		List<String> diceToPrint = new LinkedList<String>();
+		for (Card card : diceRoll) {
+			if (card != Card.NONE) {
+				diceToPrint.add(card.toString());
+			}
+		}
+		if (diceToPrint.isEmpty()) {
+			return "nothing";
+		}
+		else {
+			return StringUtils.join(diceToPrint, ", ");
+		}
+	}
+
 	private void updateScores(final List<Player> players) {
 		for (Player player : players) {
 			playerStatus.get(player).updateScore();
@@ -192,8 +215,9 @@ public class GameActivity extends Activity implements GameEventListener {
 		}};
 		
 		for (Card cardType : counterMap.keySet()) {
+			Integer cardCount = (Integer)Collections.frequency(cards, cardType);
 			((TextView) findViewById(counterMap.get(cardType)))
-				.setText(((Integer)Collections.frequency(cards, cardType)).toString());
+				.setText(cardCount.toString());
 		}
 	}
 }
