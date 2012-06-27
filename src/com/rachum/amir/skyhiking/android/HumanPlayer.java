@@ -93,7 +93,7 @@ public class HumanPlayer extends Player {
 						}
 					});
 				}
-				if (hasWild) {
+				if (hasWild && !context.diceRoll.isEmpty()) {
 					payWithWild.setEnabled(true);
 					payWithWild.setOnClickListener(new View.OnClickListener() {
 						@Override

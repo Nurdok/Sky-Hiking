@@ -21,15 +21,51 @@ public class PlayerStatusDisplay extends LinearLayout {
 		this.context = context;
 		this.player = player;
 		playerName = new TextView(context);
-		this.setPadding(10, 20, 10, 0);
-		playerName.setPadding(0, 0, 20, 0);
-		playerName.setTextSize(20);
+		this.setPadding(dpToPx(7, Dimension.WIDTH), 
+					    dpToPx(14, Dimension.HEIGHT), 
+					    dpToPx(7, Dimension.WIDTH), 
+					    dpToPx(0, Dimension.HEIGHT));
+		playerName.setPadding(dpToPx(0, Dimension.WIDTH), 
+							  dpToPx(0, Dimension.HEIGHT), 
+							  dpToPx(14, Dimension.WIDTH), 
+							  dpToPx(0, Dimension.HEIGHT));
+		playerName.setTextSize(18);
 		statusImage = new ImageView(context);
 		setPlaying(true);
 		unsetStatus();
 		updateScore();
 		addView(playerName);
 		addView(statusImage);
+	}
+	
+	enum Dimension {
+		HEIGHT, WIDTH;
+	}
+	
+	private int dpToPx(int dp, Dimension dimension) { 
+		// Get the screen's density scale 
+		final float scale = getResources().getDisplayMetrics().density; 
+		// Convert the dp to pixels, based on density scale
+		int px = (int) (dp * scale + 0.5f); 
+		if (dimension != null) {
+			int ref, dim;
+			switch (dimension) {
+			case HEIGHT:
+				dim = getResources().getDisplayMetrics().heightPixels; 
+				ref = 800;
+				break;
+			case WIDTH:
+				dim = getResources().getDisplayMetrics().widthPixels; 
+				ref = 480;
+				break;
+			default:
+				dim = 1;
+				ref = 1;
+			}
+			px = (int) (px * ((float) dim / ref));
+		}
+		
+		return px;
 	}
 	
 	public void setMove(Move move) {
@@ -42,8 +78,8 @@ public class PlayerStatusDisplay extends LinearLayout {
 			statusImage.setImageResource(R.drawable.stay);
 			break;
 		}
-		statusImage.getLayoutParams().height = 40;
-		statusImage.getLayoutParams().width = 40;
+		statusImage.getLayoutParams().height = dpToPx(20, null);
+		statusImage.getLayoutParams().width = dpToPx(20, null);
 	}
 	
 	public void setPlaying(boolean playing) {
@@ -56,15 +92,16 @@ public class PlayerStatusDisplay extends LinearLayout {
 	
 	public void setWon() {
 		playerName.setTextAppearance(getContext(), R.style.BoldText);
-		playerName.setShadowLayer(2, 0, 0, Color.BLACK);
+		playerName.setShadowLayer(dpToPx(2, null), dpToPx(0, null), 
+								  dpToPx(0, null), Color.BLACK);
 		playerName.setTextColor(Color.GREEN);
 	}
 	
 	public void setPilot() {
 		statusImage.setVisibility(VISIBLE);
 		statusImage.setImageResource(R.drawable.pilot); //TODO: change to pilot image
-		statusImage.getLayoutParams().height = 40;
-		statusImage.getLayoutParams().width = 40;
+		statusImage.getLayoutParams().height = dpToPx(20, null);
+		statusImage.getLayoutParams().width = dpToPx(20, null);
 	}
 	
 	public void unsetStatus() {

@@ -9,14 +9,14 @@
         android:id="@+id/imageView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20px"
+        android:paddingTop="20dp"
         android:src="@drawable/logo" />
 
     <TextView
         android:id="@+id/player_name_display"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="20px"
+        android:paddingTop="20dp"
         android:text="You are {{Name}}."
         android:textColor="#000000"
         android:gravity="center"
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:paddingBottom="20px"
+        android:paddingBottom="20dp"
         android:text="Double tap to change!"
         android:textSize="10sp"
         android:textColor="#000000" />
@@ -50,7 +50,7 @@
         android:gravity="center"
         android:text="@string/beta_notice"
         android:autoLink="web"
-        android:paddingTop="100px"
+        android:paddingTop="100dp"
         android:textColor="#000000"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 

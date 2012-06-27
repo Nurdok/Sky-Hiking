@@ -121,7 +121,7 @@ public class GameActivity extends Activity implements GameEventListener {
 		} else {
 			lastKnownLevel = level;
 		}
-		LinearLayout layout = (LinearLayout) findViewById(R.id.level);
+		LinearLayout layout = (LinearLayout) findViewById(R.id.levels_row);
 		layout.removeAllViews();
 		for (CloudLevel cloudLevel : CloudLevel.gameLevels()) {
 			Button levelImage = new Button(this);
