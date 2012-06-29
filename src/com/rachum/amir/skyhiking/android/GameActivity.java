@@ -49,7 +49,9 @@ public class GameActivity extends Activity implements GameEventListener {
     	new HashMap<Player, PlayerStatusDisplay>();
     private List<String> names = 
     	Arrays.asList("Phil", "Johnny", "Sharon", "Tammy", "Dan", "George",
-    			"Joel", "Jeff", "Arnold", "Jack", "Gary", "Ben", "Fred");
+    			"Joel", "Jeff", "Arnold", "Jack", "Gary", "Ben", "Fred",
+    			"Susan", "Andy", "Evelyn", "Amy", "Donna", "Max", "Jane",
+    			"Joan", "Melanie", "Phoebe", "Caroline", "Veronica");
     
     /** Called when the activity is first created. */
     @Override
@@ -128,7 +130,14 @@ public class GameActivity extends Activity implements GameEventListener {
 			levelImage.setWidth(50);
 			levelImage.setPadding(5, 5, 5, 5);
 			levelImage.setClickable(false);
-			levelImage.setText(((Integer) cloudLevel.getScore()).toString());
+			String levelScore = ((Integer) cloudLevel.getScore()).toString();
+			String levelDice = "-";
+			if (cloudLevel.getDiceNumber() > 0) {
+				levelDice = ((Integer) cloudLevel.getDiceNumber()).toString();
+				levelDice = "(" + levelDice + ")";
+			}
+			String levelInfo = levelScore + "\n" + levelDice;
+			levelImage.setText(levelInfo);
 			if (cloudLevel.equals(level)) {
 				levelImage.setBackgroundResource(R.drawable.levelselected);
 			} else {
