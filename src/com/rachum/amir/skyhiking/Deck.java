@@ -50,6 +50,9 @@ public class Deck {
         		Collections.shuffle(cards);
                 assert(cards.size() + discard.size() == 76);
             }
+            if (cards.isEmpty()) {
+            	return cardsDrawn;
+            }
             assert(!cards.isEmpty());
         	cardsDrawn.add(cards.remove(0));
 		}
