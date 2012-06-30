@@ -11,11 +11,16 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -40,7 +45,7 @@ import com.rachum.amir.skyhiking.players.RiskyPlayer;
 import com.rachum.amir.util.range.Range;
 
 public class GameActivity extends Activity implements GameEventListener {
-    private LinearLayout scoreboard;
+	private LinearLayout scoreboard;
     private TextView log;
     private Handler handler;
     private Player humanPlayer;
@@ -250,5 +255,27 @@ public class GameActivity extends Activity implements GameEventListener {
 		finish();
 		Intent intent = getIntent();
 		startActivity(intent);
+	}
+	
+	@Override
+	public void onBackPressed() {
+		new AlertDialog.Builder(this)
+        .setIcon(android.R.drawable.ic_dialog_alert)
+        .setTitle("Quit Game")
+        .setMessage("Are you sure you want to quit?")
+        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                //Stop the activity
+            	GameActivity.this.finish();
+            }
+
+        })
+        .setNegativeButton("No", null)
+        .show();
+
+        return;
 	}
 }
