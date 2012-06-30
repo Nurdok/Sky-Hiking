@@ -51,7 +51,8 @@ public class GameActivity extends Activity implements GameEventListener {
     	Arrays.asList("Phil", "Johnny", "Sharon", "Tammy", "Dan", "George",
     			"Joel", "Jeff", "Arnold", "Jack", "Gary", "Ben", "Fred",
     			"Susan", "Andy", "Evelyn", "Amy", "Donna", "Max", "Jane",
-    			"Joan", "Melanie", "Phoebe", "Caroline", "Veronica");
+    			"Joan", "Melanie", "Phoebe", "Caroline", "Veronica",
+    			"Gloria", "Maya", "Karen", "Marry Ann");
     
     /** Called when the activity is first created. */
     @Override
@@ -162,7 +163,7 @@ public class GameActivity extends Activity implements GameEventListener {
 			log.setText(event.context.pilot + " rolled " + diceRollPrint + ".");
 			break;
 		case GAME_BEGIN:
-			log.setText("Starting a new game!\n");
+			log.setText("Starting a new game!");
 			break;
 		case GAME_END:
 			log.setText("Game over! The winner is " + event.winner);
