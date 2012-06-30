@@ -1,19 +1,26 @@
 package com.rachum.amir.skyhiking.android;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.rachum.amir.skyhiking.Move;
 import com.rachum.amir.skyhiking.android.R;
 import com.rachum.amir.skyhiking.players.Player;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 
-public class PlayerStatusDisplay extends LinearLayout {
+public class PlayerStatusDisplay extends TableRow {
 	private final TextView playerName;
+	private final TextView playerScore;
+	private final TextView playerCards;
 	private final ImageView statusImage;
 	private final Player player;
+	List<TextView> tviews;
 	Context context;
 	
 	public PlayerStatusDisplay(Context context, Player player) {
@@ -21,21 +28,38 @@ public class PlayerStatusDisplay extends LinearLayout {
 		this.context = context;
 		this.player = player;
 		playerName = new TextView(context);
-		this.setPadding(dpToPx(7, Dimension.WIDTH), 
+		playerName.setEllipsize(TextUtils.TruncateAt.END);
+		playerName.setSingleLine();
+		playerName.setLayoutParams(
+				new TableRow.LayoutParams(
+						LayoutParams.FILL_PARENT, 
+						LayoutParams.WRAP_CONTENT, 
+						0f
+				)
+		);
+		playerScore = new TextView(context);
+		playerCards = new TextView(context);
+		tviews = Arrays.asList(playerName, playerScore, playerCards);
+		this.setPadding(dpToPx(0, Dimension.WIDTH), 
 					    dpToPx(14, Dimension.HEIGHT), 
-					    dpToPx(7, Dimension.WIDTH), 
+					    dpToPx(0, Dimension.WIDTH), 
 					    dpToPx(0, Dimension.HEIGHT));
-		playerName.setPadding(dpToPx(0, Dimension.WIDTH), 
-							  dpToPx(0, Dimension.HEIGHT), 
-							  dpToPx(14, Dimension.WIDTH), 
-							  dpToPx(0, Dimension.HEIGHT));
-		playerName.setTextSize(18);
+		for (TextView tview : tviews) {
+			tview.setPadding(dpToPx(0, Dimension.WIDTH), 
+							 dpToPx(0, Dimension.HEIGHT), 
+							 dpToPx(14, Dimension.WIDTH), 
+						     dpToPx(0, Dimension.HEIGHT));
+			tview.setTextSize(18);
+			tview.setTextColor(Color.BLACK);
+		}
 		statusImage = new ImageView(context);
+		addView(playerName);
+		addView(playerScore);
+		addView(playerCards);
+		addView(statusImage);
 		setPlaying(true);
 		unsetStatus();
-		updateScore();
-		addView(playerName);
-		addView(statusImage);
+		updatePlayerInfo();
 	}
 	
 	enum Dimension {
@@ -83,10 +107,12 @@ public class PlayerStatusDisplay extends LinearLayout {
 	}
 	
 	public void setPlaying(boolean playing) {
-		if (playing) {
-			playerName.setTextColor(Color.BLACK);
-		} else {
-			playerName.setTextColor(Color.GRAY);
+		for (TextView tview : tviews) {
+			if (playing) {
+				tview.setTextColor(Color.BLACK);
+			} else {
+				tview.setTextColor(Color.GRAY);
+			}
 		}
 	}
 	
@@ -106,12 +132,13 @@ public class PlayerStatusDisplay extends LinearLayout {
 	
 	public void unsetStatus() {
 		statusImage.setVisibility(INVISIBLE);
+		statusImage.getLayoutParams().height = dpToPx(20, null);
+		statusImage.getLayoutParams().width = dpToPx(20, null);
 	}
 	
-	public void updateScore() {
-		int cardCount = player.getHand().getCards().size();
-		int score = player.getScore();
-		playerName.setText(player.getName() + " (" + cardCount + "C / " + 
-						   score + "P)");
+	public void updatePlayerInfo() {
+		playerName.setText(player.getName());
+		playerScore.setText(String.format("%2d Pts", player.getScore()));
+		playerCards.setText(String.format("%2d Cards", player.getHand().getCards().size()));
 	}
 }

@@ -224,7 +224,7 @@ public class GameActivity extends Activity implements GameEventListener {
 
 	private void updateScores(final List<Player> players) {
 		for (Player player : players) {
-			playerStatus.get(player).updateScore();
+			playerStatus.get(player).updatePlayerInfo();
 		}
 	}
     
