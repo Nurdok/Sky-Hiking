@@ -19,6 +19,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,6 +68,7 @@ public class GameActivity extends Activity implements GameEventListener {
         handler = new Handler();
         scoreboard = (LinearLayout) findViewById(R.id.scoreboard);
         log = (TextView) findViewById(R.id.log);
+        log.setGravity(Gravity.CENTER);
         final Button stay = (Button) findViewById(R.id.stay);
         final Button leave = (Button) findViewById(R.id.leave);
         final Button pay = (Button) findViewById(R.id.pay);

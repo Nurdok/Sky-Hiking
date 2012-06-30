@@ -9,6 +9,7 @@ import com.rachum.amir.skyhiking.players.Player;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TableRow;
@@ -128,12 +129,18 @@ public class PlayerStatusDisplay extends TableRow {
 		statusImage.setImageResource(R.drawable.pilot); //TODO: change to pilot image
 		statusImage.getLayoutParams().height = dpToPx(20, null);
 		statusImage.getLayoutParams().width = dpToPx(20, null);
+		for (TextView tview : tviews) {
+			tview.setTypeface(null, Typeface.BOLD);
+		}
 	}
 	
 	public void unsetStatus() {
 		statusImage.setVisibility(INVISIBLE);
 		statusImage.getLayoutParams().height = dpToPx(20, null);
 		statusImage.getLayoutParams().width = dpToPx(20, null);
+		for (TextView tview : tviews) {
+			tview.setTypeface(null, Typeface.NORMAL);
+		}
 	}
 	
 	public void updatePlayerInfo() {

@@ -200,7 +200,7 @@
         android:layout_above="@+id/buttonsFlipper"
         android:layout_below="@+id/scoreboard"
         android:gravity="center"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:textStyle="bold"
     	android:textColor="#000000"
