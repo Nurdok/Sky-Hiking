@@ -162,7 +162,7 @@ public class Game extends Thread {
 		pilot.pay(handler, this);
 		GameEvent event = new GameEvent(Type.PAY, this);
 		event.didPay = handler.didPay();
-		event.cardsPayed = handler.getCards();
+		event.cardsPaid = handler.getCards();
 		announce(event);
 		if (handler.didPay()) {
             return LevelOutcome.SUCCESS;

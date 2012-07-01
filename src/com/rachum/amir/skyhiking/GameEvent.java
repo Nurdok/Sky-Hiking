@@ -24,5 +24,5 @@ public class GameEvent {
 	public Player currentPlayer = null;
 	public Player winner = null;
 	public Move move = null;
-	public Collection<Card> cardsPayed = null;
+	public Collection<Card> cardsPaid = null;
 }

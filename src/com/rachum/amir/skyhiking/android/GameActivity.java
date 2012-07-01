@@ -58,7 +58,7 @@ public class GameActivity extends Activity implements GameEventListener {
     			"Joel", "Jeff", "Arnold", "Jack", "Gary", "Ben", "Fred",
     			"Susan", "Andy", "Evelyn", "Amy", "Donna", "Max", "Jane",
     			"Joan", "Melanie", "Phoebe", "Caroline", "Veronica",
-    			"Gloria", "Maya", "Karen", "Marry Ann");
+    			"Gloria", "Maya", "Karen", "Mary Ann");
     
     /** Called when the activity is first created. */
     @Override
@@ -195,8 +195,8 @@ public class GameActivity extends Activity implements GameEventListener {
 			break;
 		case PAY:
 			if (event.didPay) {
-				log.setText(event.context.pilot + " payed");
-				if (event.cardsPayed.contains(Card.WILD)) {
+				log.setText(event.context.pilot + " paid");
+				if (event.cardsPaid.contains(Card.WILD)) {
 					log.append(" with a wildcard");
 				}
 				log.append(".");
