@@ -69,6 +69,7 @@ public class SmartPlayer extends Player {
 	    } else if (hand.contains(Card.WILD)) {
 	    	List<Boolean> options = new LinkedList<Boolean>();
 	    	if (context.level.getScore() >= 9) {
+	    		options.add(true);
 	    		for (int i : new Range(context.level.getScore()-9)) {
 	    			options.add(true);
 	    		}
