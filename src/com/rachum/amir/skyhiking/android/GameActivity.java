@@ -43,6 +43,7 @@ import com.rachum.amir.skyhiking.android.R;
 import com.rachum.amir.skyhiking.players.Player;
 import com.rachum.amir.skyhiking.players.RandomPlayer;
 import com.rachum.amir.skyhiking.players.RiskyPlayer;
+import com.rachum.amir.skyhiking.players.SmartPlayer;
 import com.rachum.amir.util.range.Range;
 
 public class GameActivity extends Activity implements GameEventListener {
@@ -84,7 +85,7 @@ public class GameActivity extends Activity implements GameEventListener {
         Collections.shuffle(names);
         final List<Player> players = new LinkedList<Player>();
         for (final int i : new Range(5)) {
-        	players.add(new RandomPlayer(names.get(i)));
+        	players.add(new SmartPlayer(names.get(i)));
         }
         Bundle bundle = getIntent().getExtras();
         String playerName = bundle.getString("playerName");
@@ -119,7 +120,7 @@ public class GameActivity extends Activity implements GameEventListener {
                 handleEventAux(event);
                 updateScores(event.context.players);
                 updateHand(cards);
-                updateLevelInfo(event.level);
+                updateLevelInfo(event.context.level);
                 eventHandler.done();
 			}
 		});
@@ -180,7 +181,7 @@ public class GameActivity extends Activity implements GameEventListener {
 			flipper.showNext();
 			break;
 		case LEVEL_BEGIN:
-			log.setText("Starting " + event.level);
+			log.setText("Starting " + event.context.level);
 			for (Player player : event.context.players) {
 				playerStatus.get(player).unsetStatus();
 				playerStatus.get(player).setPlaying(

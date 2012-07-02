@@ -19,7 +19,6 @@ public class GameEvent {
     
 	public Game context;
     public Type type;
-    public CloudLevel level = null;
     public Boolean didPay = null;
 	public Player currentPlayer = null;
 	public Player winner = null;

@@ -27,6 +27,7 @@ public class Game extends Thread {
 	public Collection<Card> diceRoll;
 	final Iterator<Player> pilotIterator;
     public Player pilot;
+    public CloudLevel level;
     
 	private enum LevelOutcome {SUCCESS, CRASH, BAIL;}
 	
@@ -69,10 +70,10 @@ public class Game extends Thread {
 			remainingPlayers = new LinkedList<Player>(players);
             announce(new GameEvent(Type.ROUND_BEGIN, this));
 			for (final CloudLevel level : CloudLevel.gameLevels()) {
+                this.level = level;
 				setNextPilot();
 				
                 final GameEvent event = new GameEvent(Type.LEVEL_BEGIN, this);
-                event.level = level;
                 announce(event);
                 
 				if (level.getDiceNumber() == 0) {
