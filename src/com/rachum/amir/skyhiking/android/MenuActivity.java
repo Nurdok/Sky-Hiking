@@ -44,6 +44,16 @@ public class MenuActivity extends Activity {
         startActivity(intent);
    }
     
+   public void displayRules(final View view) {
+    	final Intent intent = new Intent(this, RulesActivity.class);
+        startActivity(intent);
+   }
+   
+   public void displayAbout(final View view) {
+    	final Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
+   }
+    
     public void playerNameClick(final View view) {
     	long thisTime = System.currentTimeMillis();
     	if (thisTime - lastTapTime < 250) {

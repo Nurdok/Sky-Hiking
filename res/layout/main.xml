@@ -42,16 +42,22 @@
         android:layout_marginTop="5dp"
         android:onClick="beginGame"
         android:text="Play" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/rulesButton"
+        android:layout_width="145dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/beta_notice"
-        android:autoLink="web"
-        android:paddingTop="100dp"
-        android:textColor="#000000"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:onClick="displayRules"
+        android:text="Rules" />
+    
+    <Button
+        android:id="@+id/aboutButton"
+        android:layout_width="145dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:onClick="displayAbout"
+        android:text="About" />
 
 </LinearLayout>

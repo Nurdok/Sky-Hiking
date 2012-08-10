@@ -12,6 +12,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.rachum.amir.skyhiking.android.GameActivity" android:configChanges="keyboardHidden|orientation"></activity>
+        <activity android:name="com.rachum.amir.skyhiking.android.RulesActivity" android:configChanges="keyboardHidden|orientation"></activity>
+        <activity android:name="com.rachum.amir.skyhiking.android.AboutActivity" android:configChanges="keyboardHidden|orientation"></activity>
         
     </application>
 
