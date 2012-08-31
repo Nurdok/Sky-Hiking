@@ -7,7 +7,7 @@
     
     <ImageView
         android:id="@+id/imageView1"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingTop="20dp"
         android:src="@drawable/logo" />
@@ -22,55 +22,12 @@
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
-        
-	        <us.feras.mdv.MarkdownView android:id="@+id/rules1" 
+            
+			<us.feras.mdv.MarkdownView android:id="@+id/rules" 
 	            android:layout_width="fill_parent"
 	            android:layout_height="fill_parent"
 	            />
 	        
-		    <ImageView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="10dp"
-		        android:layout_marginRight="10dp"
-		        android:layout_weight="1"
-		        android:id="@+id/levelsImg" />
-		    
-	        <us.feras.mdv.MarkdownView android:id="@+id/rules2" 
-	            android:layout_width="fill_parent"
-	            android:layout_height="fill_parent"
-	            />
-	        
-            <!-- 
-		    <TextView
-		        android:id="@+id/rules1"
-		        android:layout_width="fill_parent"
-		        android:text="@string/rules1"
-		        android:textColor="#000000"
-		        android:layout_weight="1"
-		        android:layout_marginLeft="5dp"
-		        android:layout_marginRight="5dp"
-		        android:layout_height="fill_parent" />
-		    
-		    <ImageView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:layout_marginLeft="10dp"
-		        android:layout_marginRight="10dp"
-		        android:layout_weight="1"
-		        android:id="@+id/levelsImg" />
-		    
-		    <TextView
-		        android:id="@+id/rules2"
-		        android:layout_width="fill_parent"
-		        android:text="@string/rules2"
-		        android:textColor="#000000"
-		        android:layout_weight="1"
-		        android:layout_marginLeft="5dp"
-		        android:layout_marginRight="5dp"
-		        android:layout_height="fill_parent" />
-		        -->
-	    
 	    </LinearLayout>
     </ScrollView>
     
